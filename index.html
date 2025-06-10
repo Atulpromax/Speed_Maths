@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vedic Math Drills - Mobile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            touch-action: manipulation;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .app-card {
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .header {
+            background: linear-gradient(to right, #4a00e0, #8e2de2);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+            max-width: 80%;
+            margin: 0 auto;
+        }
+
+        .base-selector {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 20px 15px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #eee;
+        }
+
+        .base-btn {
+            padding: 12px 20px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #5a5a5a;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .base-btn.active {
+            background: #4a00e0;
+            color: white;
+            border-color: #4a00e0;
+            box-shadow: 0 4px 10px rgba(74, 0, 224, 0.3);
+        }
+
+        .problem-container {
+            padding: 30px 20px;
+            text-align: center;
+            background: white;
+        }
+
+        .problem-display {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin: 20px 0;
+            color: #2c3e50;
+            min-height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .input-container {
+            padding: 0 20px 20px;
+        }
+
+        .answer-input {
+            width: 100%;
+            padding: 20px;
+            font-size: 1.8rem;
+            text-align: center;
+            border: 3px solid #e0e0e0;
+            border-radius: 15px;
+            outline: none;
+            transition: border-color 0.3s;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .answer-input:focus {
+            border-color: #4a00e0;
+            box-shadow: 0 0 0 3px rgba(74, 0, 224, 0.2);
+        }
+
+        .feedback {
+            text-align: center;
+            min-height: 40px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            padding: 15px;
+            margin: 10px 20px;
+            border-radius: 12px;
+            transition: all 0.4s ease;
+        }
+
+        .feedback.correct {
+            background: #e8f5e9;
+            color: #2e7d32;
+            animation: pop 0.5s;
+        }
+
+        .feedback.incorrect {
+            background: #ffebee;
+            color: #c62828;
+            animation: shake 0.5s;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #eee;
+        }
+
+        .control-btn {
+            padding: 18px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .control-btn:active {
+            transform: scale(0.96);
+        }
+
+        .start-btn {
+            background: #00c853;
+            color: white;
+        }
+
+        .pause-btn {
+            background: #ff9800;
+            color: white;
+        }
+
+        .next-btn {
+            background: #2196f3;
+            color: white;
+        }
+
+        .reset-btn {
+            background: #f44336;
+            color: white;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 18px 10px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #4a00e0;
+            margin: 5px 0;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #777;
+            font-weight: 500;
+        }
+
+        .timer-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+        }
+
+        .timer-ring {
+            transform: rotate(-90deg);
+        }
+
+        .timer-circle {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.7);
+            stroke-width: 4;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.1s linear;
+        }
+
+        .timer-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .sound-toggle {
+            position: absolute;
+            top: 25px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+        }
+
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+
+        .key-hint {
+            font-size: 0.8rem;
+            margin-top: 5px;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 380px) {
+            .problem-display {
+                font-size: 2.4rem;
+            }
+            
+            .answer-input {
+                font-size: 1.6rem;
+                padding: 16px;
+            }
+            
+            .control-btn {
+                padding: 15px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (prefers-reduced-motion) {
+            .feedback.correct, .feedback.incorrect {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="app-card">
+            <div class="header">
+                <button class="sound-toggle">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+                <div class="timer-container">
+                    <svg class="timer-ring" width="60" height="60">
+                        <circle class="timer-circle" r="27" cx="30" cy="30" stroke-dasharray="170" stroke-dashoffset="0"></circle>
+                    </svg>
+                    <div class="timer-text" id="timer">60</div>
+                </div>
+                <h1>Vedic Math Drills</h1>
+                <p>Master mental multiplication with ancient techniques</p>
+            </div>
+            
+            <div class="base-selector">
+                <div class="base-btn active" data-base="10">Base 10</div>
+                <div class="base-btn" data-base="100">Base 100</div>
+                <div class="base-btn" data-base="1000">Base 1000</div>
+                <div class="base-btn" data-base="random">Random</div>
+            </div>
+            
+            <div class="problem-container">
+                <div class="problem-display" id="problem">Ready to start</div>
+                
+                <div class="input-container">
+                    <input type="number" class="answer-input" id="answer" placeholder="Your answer" inputmode="numeric">
+                </div>
+                
+                <div class="feedback" id="feedback"></div>
+            </div>
+            
+            <div class="controls">
+                <button class="control-btn start-btn" id="startBtn">
+                    <i class="fas fa-play"></i> Start
+                    <div class="key-hint">(S)</div>
+                </button>
+                <button class="control-btn pause-btn" id="pauseBtn" disabled>
+                    <i class="fas fa-pause"></i> Pause
+                    <div class="key-hint">(Space)</div>
+                </button>
+                <button class="control-btn next-btn" id="nextBtn" disabled>
+                    <i class="fas fa-forward"></i> Next
+                    <div class="key-hint">(N)</div>
+                </button>
+                <button class="control-btn reset-btn" id="resetBtn">
+                    <i class="fas fa-redo"></i> Reset
+                    <div class="key-hint">(R)</div>
+                </button>
+            </div>
+            
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-value" id="attempted">0</div>
+                    <div class="stat-label">Attempted</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="correct">0</div>
+                    <div class="stat-label">Correct</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="streak">0</div>
+                    <div class="stat-label">Streak</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="accuracy">0%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class VedicMathApp {
+            constructor() {
+                this.state = 'idle';
+                this.currentProblem = null;
+                this.stats = {
+                    attempted: 0,
+                    correct: 0,
+                    streak: 0,
+                    bestStreak: 0,
+                    times: [],
+                    currentStartTime: null,
+                    totalTime: 0
+                };
+                this.soundEnabled = true;
+                this.audioContext = null;
+                this.currentTimeout = null;
+                this.progressInterval = null;
+                this.elapsedSeconds = 0;
+                this.selectedBase = '10';
+                
+                this.initElements();
+                this.initEventListeners();
+                this.loadStats();
+                this.updateUI();
+                
+                window.App = this;
+            }
+            
+            initElements() {
+                this.elements = {
+                    baseBtns: document.querySelectorAll('.base-btn'),
+                    problemDisplay: document.getElementById('problem'),
+                    answerInput: document.getElementById('answer'),
+                    feedback: document.getElementById('feedback'),
+                    startBtn: document.getElementById('startBtn'),
+                    pauseBtn: document.getElementById('pauseBtn'),
+                    nextBtn: document.getElementById('nextBtn'),
+                    resetBtn: document.getElementById('resetBtn'),
+                    attempted: document.getElementById('attempted'),
+                    correct: document.getElementById('correct'),
+                    streak: document.getElementById('streak'),
+                    accuracy: document.getElementById('accuracy'),
+                    soundToggle: document.querySelector('.sound-toggle'),
+                    timerCircle: document.querySelector('.timer-circle'),
+                    timerText: document.getElementById('timer')
+                };
+            }
+            
+            initEventListeners() {
+                this.elements.startBtn.addEventListener('click', () => this.start());
+                this.elements.pauseBtn.addEventListener('click', () => this.togglePause());
+                this.elements.nextBtn.addEventListener('click', () => this.nextProblem());
+                this.elements.resetBtn.addEventListener('click', () => this.reset());
+                this.elements.soundToggle.addEventListener('click', () => this.toggleSound());
+                this.elements.answerInput.addEventListener('keydown', (e) => this.handleKeyDown(e));
+                
+                this.elements.baseBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        this.elements.baseBtns.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        this.selectedBase = btn.dataset.base;
+                        
+                        if (this.state === 'running') {
+                            this.nextProblem();
+                        }
+                    });
+                });
+            }
+            
+            getActualBase() {
+                if (this.selectedBase === 'random') {
+                    const bases = [10, 100, 1000];
+                    return bases[Math.floor(Math.random() * bases.length)];
+                }
+                return parseInt(this.selectedBase);
+            }
+            
+            getBasePool(base) {
+                const multiples = [];
+                for (let i = 1; i <= 9; i++) {
+                    multiples.push(base * i);
+                }
+                return multiples;
+            }
+            
+            getDeltaLimit(base) {
+                return base === 10 ? 3 : 30;
+            }
+            
+            generateProblem() {
+                const base = this.getActualBase();
+                const pool = this.getBasePool(base);
+                const tempBase = pool[Math.floor(Math.random() * pool.length)];
+                const deltaLimit = this.getDeltaLimit(base);
+                
+                let a, b;
+                let attempts = 0;
+                const maxAttempts = 100;
+                
+                do {
+                    a = tempBase + this.getRandomDelta(deltaLimit);
+                    b = tempBase + this.getRandomDelta(deltaLimit);
+                    attempts++;
+                    
+                    if (attempts > maxAttempts) {
+                        // Fallback if we can't find suitable numbers
+                        a = tempBase + (Math.random() > 0.5 ? 1 : -1) * Math.floor(Math.random() * deltaLimit + 1);
+                        b = tempBase + (Math.random() > 0.5 ? 1 : -1) * Math.floor(Math.random() * deltaLimit + 1);
+                        break;
+                    }
+                } while (Math.abs(a - b) > 30);
+                
+                return {
+                    a,
+                    b,
+                    product: a * b,
+                    base,
+                    tempBase
+                };
+            }
+            
+            getRandomDelta(limit) {
+                const sign = Math.random() > 0.5 ? 1 : -1;
+                return sign * Math.floor(Math.random() * limit + 1);
+            }
+            
+            start() {
+                if (this.state === 'running') return;
+                
+                this.state = 'running';
+                this.stats.currentStartTime = performance.now();
+                this.elapsedSeconds = 0;
+                this.startProgressTimer();
+                this.nextProblem();
+                this.updateUI();
+            }
+            
+            togglePause() {
+                if (this.state === 'idle') return;
+                
+                if (this.state === 'running') {
+                    this.state = 'paused';
+                    this.stats.totalTime += performance.now() - this.stats.currentStartTime;
+                    this.stopProgressTimer();
+                } else {
+                    this.state = 'running';
+                    this.stats.currentStartTime = performance.now();
+                    this.startProgressTimer();
+                }
+                
+                this.updateUI();
+            }
+            
+            nextProblem() {
+                if (this.state === 'idle') this.start();
+                
+                this.currentProblem = this.generateProblem();
+                this.elements.problemDisplay.textContent = `${this.currentProblem.a} × ${this.currentProblem.b} = ?`;
+                this.elements.answerInput.value = '';
+                this.elements.feedback.textContent = '';
+                this.elements.feedback.className = 'feedback';
+                this.elements.answerInput.focus();
+                
+                if (this.state === 'running') {
+                    this.stats.currentStartTime = performance.now();
+                    this.elapsedSeconds = 0;
+                    this.updateProgressRing(0);
+                }
+            }
+            
+            checkAnswer() {
+                if (!this.currentProblem || this.state === 'idle') return;
+                
+                const userAnswer = parseInt(this.elements.answerInput.value);
+                if (isNaN(userAnswer)) return;
+                
+                this.stats.attempted++;
+                const isCorrect = userAnswer === this.currentProblem.product;
+                
+                if (isCorrect) {
+                    this.stats.correct++;
+                    this.stats.streak++;
+                    this.stats.bestStreak = Math.max(this.stats.bestStreak, this.stats.streak);
+                    
+                    const timeTaken = performance.now() - this.stats.currentStartTime;
+                    this.stats.times.push(timeTaken);
+                    this.stats.totalTime += timeTaken;
+                    
+                    this.elements.feedback.textContent = 'Correct!';
+                    this.elements.feedback.className = 'feedback correct';
+                    
+                    if (this.stats.streak % 10 === 0) {
+                        this.showConfetti();
+                    }
+                    
+                    this.playSound(523.25, 200); // C5 note
+                    this.stopProgressTimer();
+                } else {
+                    this.stats.streak = 0;
+                    this.elements.feedback.textContent = 'Try again';
+                    this.elements.feedback.className = 'feedback incorrect';
+                    this.playSound(220, 200); // A3 note
+                }
+                
+                this.saveStats();
+                this.updateUI();
+                
+                if (isCorrect) {
+                    this.currentTimeout = setTimeout(() => {
+                        this.nextProblem();
+                    }, 1500);
+                }
+            }
+            
+            reset() {
+                this.state = 'idle';
+                this.currentProblem = null;
+                clearTimeout(this.currentTimeout);
+                this.stopProgressTimer();
+                
+                this.elements.problemDisplay.textContent = 'Ready to start';
+                this.elements.answerInput.value = '';
+                this.elements.feedback.textContent = '';
+                this.elements.feedback.className = 'feedback';
+                this.updateProgressRing(0);
+                
+                this.updateUI();
+            }
+            
+            updateUI() {
+                const accuracy = this.stats.attempted > 0 
+                    ? Math.round((this.stats.correct / this.stats.attempted) * 100) 
+                    : 0;
+                
+                this.elements.attempted.textContent = this.stats.attempted;
+                this.elements.correct.textContent = this.stats.correct;
+                this.elements.streak.textContent = this.stats.streak;
+                this.elements.accuracy.textContent = `${accuracy}%`;
+                
+                this.elements.startBtn.disabled = this.state === 'running';
+                this.elements.pauseBtn.disabled = this.state === 'idle';
+                this.elements.nextBtn.disabled = this.state !== 'running';
+                
+                this.elements.pauseBtn.querySelector('i').className = this.state === 'paused' ? 'fas fa-play' : 'fas fa-pause';
+                this.elements.pauseBtn.querySelector('.key-hint').textContent = this.state === 'paused' ? '(Space)' : '(Space)';
+                
+                const soundIcon = this.soundEnabled ? 'fa-volume-up' : 'fa-volume-mute';
+                this.elements.soundToggle.innerHTML = `<i class="fas ${soundIcon}"></i>`;
+            }
+            
+            handleKeyDown(e) {
+                if (e.key === 'Enter') {
+                    this.checkAnswer();
+                }
+            }
+            
+            startProgressTimer() {
+                this.stopProgressTimer();
+                this.progressInterval = setInterval(() => {
+                    this.elapsedSeconds++;
+                    const progress = Math.min(this.elapsedSeconds / 60, 1);
+                    this.updateProgressRing(progress);
+                    
+                    // Update timer text
+                    this.elements.timerText.textContent = Math.max(0, 60 - this.elapsedSeconds);
+                    
+                    if (this.elapsedSeconds >= 60) {
+                        this.elements.feedback.textContent = 'Time\'s up!';
+                        this.elements.feedback.className = 'feedback incorrect';
+                        this.playSound(220, 500);
+                        this.stopProgressTimer();
+                        setTimeout(() => this.nextProblem(), 2000);
+                    }
+                }, 1000);
+            }
+            
+            stopProgressTimer() {
+                if (this.progressInterval) {
+                    clearInterval(this.progressInterval);
+                    this.progressInterval = null;
+                }
+            }
+            
+            updateProgressRing(progress) {
+                const circumference = 170; // 2 * π * r (r=27)
+                const offset = circumference * (1 - progress);
+                this.elements.timerCircle.style.strokeDashoffset = offset;
+            }
+            
+            toggleSound() {
+                this.soundEnabled = !this.soundEnabled;
+                this.updateUI();
+            }
+            
+            playSound(frequency, duration) {
+                if (!this.soundEnabled || typeof AudioContext === 'undefined') return;
+                
+                try {
+                    if (!this.audioContext) {
+                        this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    }
+                    
+                    const oscillator = this.audioContext.createOscillator();
+                    const gain = this.audioContext.createGain();
+                    
+                    oscillator.type = 'square';
+                    oscillator.frequency.value = frequency;
+                    oscillator.connect(gain);
+                    gain.connect(this.audioContext.destination);
+                    
+                    oscillator.start();
+                    gain.gain.exponentialRampToValueAtTime(
+                        0.00001,
+                        this.audioContext.currentTime + duration / 1000
+                    );
+                    
+                    setTimeout(() => {
+                        oscillator.stop();
+                    }, duration);
+                } catch (e) {
+                    console.log("Audio error:", e);
+                }
+            }
+            
+            showConfetti() {
+                if (!this.soundEnabled) return;
+                
+                // Simple confetti effect using sounds
+                const notes = [523.25, 587.33, 659.25, 698.46, 783.99]; // C5, D5, E5, F5, G5
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(() => {
+                        this.playSound(notes[i], 300);
+                    }, i * 150);
+                }
+            }
+            
+            loadStats() {
+                const savedStats = localStorage.getItem('vedicMathStats');
+                if (savedStats) {
+                    this.stats = JSON.parse(savedStats);
+                }
+            }
+            
+            saveStats() {
+                localStorage.setItem('vedicMathStats', JSON.stringify(this.stats));
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const app = new VedicMathApp();
+            
+            // Mobile keyboard event handling
+            document.getElementById('answer').addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    app.checkAnswer();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
