@@ -621,11 +621,6 @@
                 
                 this.currentFactors = { a, b };
                 this.currentAnswer = a * b;
-                
-                // Update problem display
-                this.elements.problemText.textContent = `${a} × ${b}`;
-                this.elements.baseInfo.textContent = `Near base: ${this.currentTempBase}`;
-            }
             
             startTimer() {
                 this.startTime = Date.now();
