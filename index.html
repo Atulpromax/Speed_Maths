@@ -248,7 +248,7 @@
             margin-top: 4px;
         }
 
-        .stopwatch-ring {
+        .progress-ring {
             position: absolute;
             top: 20px;
             right: 20px;
@@ -256,33 +256,23 @@
             height: 50px;
         }
 
-        .stopwatch-ring-circle {
+        .progress-ring-circle {
             transform: rotate(-90deg);
             transform-origin: 50% 50%;
         }
 
-        .stopwatch-ring-bg {
+        .progress-ring-bg {
             stroke: var(--border);
             stroke-width: 4;
             fill: none;
         }
 
-        .stopwatch-ring-fill {
+        .progress-ring-fill {
             stroke: var(--progress);
             stroke-width: 4;
             stroke-linecap: round;
             fill: none;
             transition: stroke-dashoffset 0.1s linear;
-        }
-
-        .stopwatch-time {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: var(--primary);
         }
 
         .sound-toggle {
@@ -340,12 +330,11 @@
         <div class="card">
             <button class="sound-toggle" id="soundToggle" aria-label="Toggle sound">🔊</button>
             
-            <div class="stopwatch-ring">
+            <div class="progress-ring">
                 <svg width="50" height="50" viewBox="0 0 50 50">
-                    <circle class="stopwatch-ring-bg" cx="25" cy="25" r="20"></circle>
-                    <circle class="stopwatch-ring-fill" cx="25" cy="25" r="20" stroke-dasharray="125.6" stroke-dashoffset="125.6"></circle>
+                    <circle class="progress-ring-bg" cx="25" cy="25" r="20"></circle>
+                    <circle class="progress-ring-fill" cx="25" cy="25" r="20" stroke-dasharray="125.6" stroke-dashoffset="125.6"></circle>
                 </svg>
-                <div class="stopwatch-time" id="stopwatchTime">0s</div>
             </div>
             
             <div class="base-selector">
@@ -387,7 +376,7 @@
             
             <div class="controls">
                 <button class="btn" id="startBtn">Start</button>
-                <button class="btn" id="submitBtn" disabled>Submit</button>
+                <button class="btn" id="submitBtn" disabled>Submit </button>
                 <button class="btn btn-secondary" id="nextBtn" disabled>Next</button>
                 <button class="btn btn-secondary" id="resetBtn">Reset</button>
             </div>
@@ -421,7 +410,7 @@
                 </div>
             </div>
             
-
+           
         </div>
     </div>
     
@@ -465,7 +454,6 @@
                 this.startTime = null;
                 this.timerInterval = null;
                 this.elapsedTime = 0;
-                this.circumference = 125.6; // 2 * π * r (r=20)
                 
                 // Stats
                 this.stats = {
@@ -490,8 +478,7 @@
                     nextBtn: document.getElementById('nextBtn'),
                     resetBtn: document.getElementById('resetBtn'),
                     soundToggle: document.getElementById('soundToggle'),
-                    stopwatchRing: document.querySelector('.stopwatch-ring-fill'),
-                    stopwatchTime: document.getElementById('stopwatchTime'),
+                    progressRing: document.querySelector('.progress-ring-fill'),
                     stats: {
                         attempted: document.getElementById('attempted'),
                         correct: document.getElementById('correct'),
@@ -519,8 +506,8 @@
                 // Initialize AudioContext
                 this.initAudio();
                 
-                // Initialize stopwatch ring
-                this.updateStopwatchRing(0);
+                // Initialize progress ring
+                this.updateProgressRing(0);
             }
             
             setupEventListeners() {
@@ -648,26 +635,22 @@
                 
                 this.timerInterval = setInterval(() => {
                     this.elapsedTime = Date.now() - this.startTime;
-                    this.updateStopwatchDisplay();
+                    const progress = Math.min(this.elapsedTime / 30000, 1); // 30s max for progress ring
+                    this.updateProgressRing(progress);
                 }, 100);
             }
             
-            updateStopwatchDisplay() {
-                // Calculate seconds and milliseconds
-                const seconds = Math.floor(this.elapsedTime / 1000);
-                const fraction = Math.floor((this.elapsedTime % 1000) / 10);
-                
-                // Update the stopwatch time text
-                this.elements.stopwatchTime.textContent = `${seconds}s`;
-                
-                // Calculate ring progress (one full circle = 60 seconds)
-                const progress = (seconds % 60) / 60;
-                this.updateStopwatchRing(progress);
+            stopTimer() {
+                if (this.timerInterval) {
+                    clearInterval(this.timerInterval);
+                    this.timerInterval = null;
+                }
             }
             
-            updateStopwatchRing(progress) {
-                const offset = this.circumference - (progress * this.circumference);
-                this.elements.stopwatchRing.style.strokeDashoffset = offset;
+            updateProgressRing(progress) {
+                const circumference = 125.6; // 2 * π * r (r=20)
+                const offset = circumference - (progress * circumference);
+                this.elements.progressRing.style.strokeDashoffset = offset;
             }
             
             checkAnswer() {
@@ -731,33 +714,36 @@
                 this.elements.answerInput.focus();
             }
             
+        
             nextProblem() {
                 if (this.state !== AppState.PAUSED) return;
-                
+
+                // Clear any existing timer interval before restarting
+                this.stopTimer();
+        
                 this.state = AppState.RUNNING;
                 this.generateProblem();
                 this.elements.answerInput.value = '';
                 this.elements.answerInput.focus();
                 this.elements.feedback.textContent = '';
-                this.elements.feedback.className = 'feedback';
+           	    this.elements.feedback.className = 'feedback';
                 this.updateUI();
-                
+
                 // Start timer
                 this.startTimer();
             }
-            
-            stopTimer() {
-                if (this.timerInterval) {
-                    clearInterval(this.timerInterval);
-                    this.timerInterval = null;
-                }
-            }
-            
+
+
+
+
+
+
+
+
             reset() {
                 this.state = AppState.IDLE;
                 this.stopTimer();
-                this.updateStopwatchRing(0);
-                this.elements.stopwatchTime.textContent = '0s';
+                this.updateProgressRing(0);
                 
                 this.elements.problemText.textContent = 'Press Start to Begin';
                 this.elements.baseInfo.textContent = '';
@@ -891,4 +877,6 @@
     </script>
 </body>
 </html>
+
+
 
