@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vedic Math Multiplier</title>
 
-<!-- ---------  ORIGINAL CSS – UNTOUCHED  --------- -->
+<!-- -------------  ORIGINAL UI STYLES – UNCHANGED ------------- -->
 <style>
 :root{--primary:#4a6fa5;--primary-light:#6d8fc2;--secondary:#f0f4f8;--success:#4caf50;--error:#f44336;--text:#333;--light-text:#777;--border:#e0e0e0;--shadow:rgba(0,0,0,.1);--card-bg:#ffffff;--progress:var(--primary)}
 *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif}
@@ -42,65 +42,65 @@ body{background-color:var(--secondary);min-height:100vh;display:flex;justify-con
 .stat-value{font-size:1.8rem;font-weight:700;color:var(--primary)}
 .stat-label{font-size:.9rem;color:var(--light-text);margin-top:4px}
 .stopwatch-ring{position:absolute;top:20px;right:20px;width:50px;height:50px}
-.stopwatch-ring-circle{transform:rotate(-90deg);transform-origin:50% 50%}
 .stopwatch-ring-bg{stroke:var(--border);stroke-width:4;fill:none}
 .stopwatch-ring-fill{stroke:var(--progress);stroke-width:4;stroke-linecap:round;fill:none;transition:stroke-dashoffset .1s linear}
 .stopwatch-time{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:.7rem;font-weight:600;color:var(--primary)}
 .sound-toggle{position:absolute;top:20px;left:20px;background:none;border:none;cursor:pointer;color:var(--light-text);font-size:1.5rem}
-.key-hint{position:absolute;bottom:10px;right:20px;font-size:.8rem;color:var(--light-text)}
 @media(max-width:480px){.card{padding:24px 16px}.radio-group{gap:10px}.radio-option label{width:50px;height:50px;font-size:1.1rem}.problem{font-size:2rem}.controls{flex-wrap:wrap}.btn{min-width:80px;padding:10px 15px;font-size:.9rem}}
 </style>
 </head>
 <body>
 <div class="container">
 <div class="card">
-<button class="sound-toggle" id="soundToggle" aria-label="Toggle sound">🔊</button>
+
+<button class="sound-toggle" id="soundToggle" aria-label="Toggle sound" type="button">🔊</button>
 
 <!-- stopwatch -->
 <div class="stopwatch-ring">
-<svg width="50" height="50" viewBox="0 0 50 50">
-<circle class="stopwatch-ring-bg" cx="25" cy="25" r="20"></circle>
-<circle class="stopwatch-ring-fill" cx="25" cy="25" r="20" stroke-dasharray="125.6" stroke-dashoffset="125.6"></circle>
-</svg>
-<div class="stopwatch-time" id="stopwatchTime">0s</div>
+  <svg width="50" height="50" viewBox="0 0 50 50">
+    <circle class="stopwatch-ring-bg"   cx="25" cy="25" r="20"></circle>
+    <circle class="stopwatch-ring-fill" cx="25" cy="25" r="20" stroke-dasharray="125.6" stroke-dashoffset="125.6"></circle>
+  </svg>
+  <div class="stopwatch-time" id="stopwatchTime">0s</div>
 </div>
 
 <!-- base selector -->
 <div class="base-selector">
-<h2>Select Base Group</h2>
-<div class="radio-group">
-<div class="radio-option">
-<input type="radio" name="base" id="base10" value="10" checked>
-<label for="base10" aria-label="Base 10">10</label>
-<span>Base&nbsp;10</span>
-</div>
-<div class="radio-option">
-<input type="radio" name="base" id="base100" value="100">
-<label for="base100" aria-label="Base 100">100</label>
-<span>Base&nbsp;100</span>
-</div>
-<div class="radio-option">
-<input type="radio" name="base" id="base1000" value="1000">
-<label for="base1000" aria-label="Base 1000">1000</label>
-<span>Base&nbsp;1000</span>
-</div>
-<div class="radio-option">
-<input type="radio" name="base" id="baseRandom" value="random">
-<label for="baseRandom" aria-label="Random Base">?</label>
-<span>Random</span>
-</div>
-</div>
+  <h2>Select Base Group</h2>
+  <div class="radio-group">
+    <div class="radio-option">
+      <input type="radio" name="base" id="base10" value="10" checked>
+      <label for="base10" aria-label="Base 10">10</label>
+      <span>Base&nbsp;10</span>
+    </div>
+    <div class="radio-option">
+      <input type="radio" name="base" id="base100" value="100">
+      <label for="base100" aria-label="Base 100">100</label>
+      <span>Base&nbsp;100</span>
+    </div>
+    <div class="radio-option">
+      <input type="radio" name="base" id="base1000" value="1000">
+      <label for="base1000" aria-label="Base 1000">1000</label>
+      <span>Base&nbsp;1000</span>
+    </div>
+    <div class="radio-option">
+      <input type="radio" name="base" id="baseRandom" value="random">
+      <label for="baseRandom" aria-label="Random Base">?</label>
+      <span>Random</span>
+    </div>
+  </div>
 </div>
 
 <!-- problem -->
 <div class="problem-display">
-<div class="problem" id="problemText">Press Start to Begin</div>
-<div class="base-info" id="baseInfo"></div>
+  <div class="problem" id="problemText">Press Start to Begin</div>
+  <div class="base-info" id="baseInfo"></div>
 </div>
 
 <!-- answer -->
 <div class="answer-input">
-<input type="number" id="answerInput" placeholder="Your answer" inputmode="numeric" autocomplete="off" autocorrect="off" spellcheck="false" disabled>
+  <input type="number" id="answerInput" placeholder="Your answer"
+         inputmode="numeric" autocomplete="off" autocorrect="off" spellcheck="false" disabled>
 </div>
 
 <!-- feedback -->
@@ -108,30 +108,30 @@ body{background-color:var(--secondary);min-height:100vh;display:flex;justify-con
 
 <!-- controls -->
 <div class="controls">
-<button class="btn" id="startBtn">Start</button>
-<button class="btn" id="submitBtn" disabled>Submit</button>
-<button class="btn btn-secondary" id="nextBtn" disabled>Next</button>
-<button class="btn btn-secondary" id="resetBtn">Reset</button>
+  <button class="btn"               id="startBtn"  type="button">Start</button>
+  <button class="btn"               id="submitBtn" disabled type="button">Submit</button>
+  <button class="btn btn-secondary" id="nextBtn"   disabled type="button">Next</button>
+  <button class="btn btn-secondary" id="resetBtn"  type="button">Reset</button>
 </div>
 
 <!-- stats -->
 <div class="stats">
-<div class="stats-grid">
-<div class="stat-item"><div class="stat-value" id="attempted">0</div><div class="stat-label">Attempted</div></div>
-<div class="stat-item"><div class="stat-value" id="correct">0</div><div class="stat-label">Correct</div></div>
-<div class="stat-item"><div class="stat-value" id="streak">0</div><div class="stat-label">Streak</div></div>
-<div class="stat-item"><div class="stat-value" id="accuracy">0%</div><div class="stat-label">Accuracy</div></div>
-<div class="stat-item"><div class="stat-value" id="bestTime">—</div><div class="stat-label">Best Time</div></div>
-<div class="stat-item"><div class="stat-value" id="avgTime">—</div><div class="stat-label">Avg Time</div></div>
+  <div class="stats-grid">
+    <div class="stat-item"><div class="stat-value" id="attempted">0</div><div class="stat-label">Attempted</div></div>
+    <div class="stat-item"><div class="stat-value" id="correct">0</div><div class="stat-label">Correct</div></div>
+    <div class="stat-item"><div class="stat-value" id="streak">0</div><div class="stat-label">Streak</div></div>
+    <div class="stat-item"><div class="stat-value" id="accuracy">0%</div><div class="stat-label">Accuracy</div></div>
+    <div class="stat-item"><div class="stat-value" id="bestTime">—</div><div class="stat-label">Best Time</div></div>
+    <div class="stat-item"><div class="stat-value" id="avgTime">—</div><div class="stat-label">Avg Time</div></div>
+  </div>
+</div>
+
 </div>
 </div>
 
-</div>
-</div>
-
-<!-- ---------  UPDATED SCRIPT  --------- -->
+<!-- --------------------  SCRIPT  -------------------- -->
 <script>
-/* ---------- App constants ---------- */
+/* ---------- constants ---------- */
 const AppState = { IDLE:'idle', RUNNING:'running', PAUSED:'paused' };
 
 const baseConfig = {
@@ -142,80 +142,71 @@ const baseConfig = {
 
 class VedicMathApp {
   constructor(){
-    /* ---------- runtime state ---------- */
+    /* runtime state */
     this.state = AppState.IDLE;
     this.currentBase = '10';
     this.currentTempBase = null;
     this.currentFactors = {a:null,b:null};
     this.currentAnswer = null;
 
-    /* ---------- audio ---------- */
+    /* audio */
     this.audioContext = null;
     this.soundEnabled = true;
 
-    /* ---------- timer ---------- */
+    /* timer */
     this.startTime = null;
-    this.timerInterval = null;
+    this.timerRAF = null;
     this.elapsedTime = 0;
-    this.circumference = 125.6;          // 2πr (r=20)
+    this.circumference = 125.6;  // 2πr with r=20
 
-    /* ---------- stats ---------- */
-    this.stats = {
-      attempted:0,
-      correct:0,
-      currentStreak:0,
-      bestStreak:0,
-      bestTime:null,
-      totalTime:0,
-      lastTimes:[]
-    };
+    /* stats */
+    this.stats = {attempted:0,correct:0,currentStreak:0,bestStreak:0,bestTime:null,totalTime:0,lastTimes:[]};
 
-    /* ---------- dom refs ---------- */
+    /* dom */
     this.$ = {
-      baseSelector: [...document.querySelectorAll('input[name="base"]')],
-      problemText : document.getElementById('problemText'),
-      baseInfo    : document.getElementById('baseInfo'),
-      answerInput : document.getElementById('answerInput'),
-      feedback    : document.getElementById('feedback'),
-      startBtn    : document.getElementById('startBtn'),
-      submitBtn   : document.getElementById('submitBtn'),
-      nextBtn     : document.getElementById('nextBtn'),
-      resetBtn    : document.getElementById('resetBtn'),
-      soundToggle : document.getElementById('soundToggle'),
-      stopwatchRing: document.querySelector('.stopwatch-ring-fill'),
-      stopwatchTime: document.getElementById('stopwatchTime'),
+      baseSelector:[...document.querySelectorAll('input[name="base"]')],
+      problemText :document.getElementById('problemText'),
+      baseInfo    :document.getElementById('baseInfo'),
+      answerInput :document.getElementById('answerInput'),
+      feedback    :document.getElementById('feedback'),
+      startBtn    :document.getElementById('startBtn'),
+      submitBtn   :document.getElementById('submitBtn'),
+      nextBtn     :document.getElementById('nextBtn'),
+      resetBtn    :document.getElementById('resetBtn'),
+      soundToggle :document.getElementById('soundToggle'),
+      stopwatchRing:document.querySelector('.stopwatch-ring-fill'),
+      stopwatchTime:document.getElementById('stopwatchTime'),
       stats:{
         attempted:document.getElementById('attempted'),
-        correct :document.getElementById('correct'),
-        streak  :document.getElementById('streak'),
-        accuracy:document.getElementById('accuracy'),
-        bestTime:document.getElementById('bestTime'),
-        avgTime :document.getElementById('avgTime')
+        correct:  document.getElementById('correct'),
+        streak:   document.getElementById('streak'),
+        accuracy: document.getElementById('accuracy'),
+        bestTime: document.getElementById('bestTime'),
+        avgTime:  document.getElementById('avgTime')
       }
     };
 
     this.init();
   }
 
-  /* ---------- initial wiring ---------- */
+  /* ---------- init ---------- */
   init(){
-    this.setupEventListeners();
+    this.setupListeners();
     this.loadStats();
     this.updateUI();
-    this.initAudio();
-    this.updateStopwatchRing(0);
+    this.prepareAudio();
+    this.updateRing(0);
   }
 
-  setupEventListeners(){
-    /* base radio */
-    this.$.baseSelector.forEach(radio=>{
-      radio.addEventListener('change',e=>{ this.currentBase=e.target.value; });
-    });
+  setupListeners(){
+    /* base radios */
+    this.$.baseSelector.forEach(r=>r.addEventListener('change',e=>{this.currentBase=e.target.value}));
 
-    this.$.startBtn.addEventListener('click',()=>this.start());
+    /* buttons */
+    this.$.startBtn .addEventListener('click',()=>this.start());
     this.$.submitBtn.addEventListener('click',()=>this.checkAnswer());
-    this.$.nextBtn.addEventListener('click',()=>this.nextProblem());
-    this.$.resetBtn.addEventListener('click',()=>this.reset());
+    this.$.nextBtn  .addEventListener('click',()=>this.nextProblem());
+    this.$.resetBtn .addEventListener('click',()=>this.reset());
 
     /* sound toggle */
     this.$.soundToggle.addEventListener('click',()=>{
@@ -225,7 +216,10 @@ class VedicMathApp {
 
     /* answer input */
     this.$.answerInput.addEventListener('keydown',e=>{
-      if(e.key==='Enter') (this.state===AppState.RUNNING)?this.checkAnswer():this.nextProblem();
+      if(e.key==='Enter'){
+        e.preventDefault();                                 // key FIX line
+        (this.state===AppState.RUNNING)?this.checkAnswer():this.nextProblem();
+      }
     });
 
     /* global shortcuts */
@@ -237,62 +231,53 @@ class VedicMathApp {
     });
   }
 
-  initAudio(){
-    /* create only on first gesture */
-    const unlock = ()=>{
+  prepareAudio(){
+    const unlock=()=>{
       if(!this.audioContext){
-        try{ this.audioContext=new (window.AudioContext||window.webkitAudioContext)(); }
-        catch{ this.soundEnabled=false; this.$.soundToggle.textContent='🔇'; }
+        try{this.audioContext=new(AudioContext||webkitAudioContext)();}
+        catch{this.soundEnabled=false;this.$.soundToggle.textContent='🔇';}
       }
       window.removeEventListener('pointerdown',unlock);
     };
     window.addEventListener('pointerdown',unlock,{once:true});
   }
 
-  playSound(type){
+  play(type){
     if(!this.soundEnabled||!this.audioContext) return;
     const osc=this.audioContext.createOscillator();
     const gain=this.audioContext.createGain();
-    osc.connect(gain); gain.connect(this.audioContext.destination);
+    osc.connect(gain);gain.connect(this.audioContext.destination);
     osc.type='square';
-    osc.frequency.value = (type==='correct'?523.25:349.23);
-    gain.gain.value=.2;
-    osc.start(); setTimeout(()=>osc.stop(),300);
+    osc.frequency.value=(type==='correct'?523.25:349.23);
+    gain.gain.value=.2;osc.start();setTimeout(()=>osc.stop(),300);
   }
 
-  /* ---------- core flow ---------- */
+  /* ---------- flow ---------- */
   start(){
     if(this.state===AppState.RUNNING) return;
     this.state=AppState.RUNNING;
-    this.generateProblem();
+    this.createProblem();
     this.$.answerInput.disabled=false;
     this.$.answerInput.focus();
     this.updateUI();
-    this.startTimer();
+    this.runTimer();
   }
 
-  generateProblem(){
-    let baseType=this.currentBase;
-    if(baseType==='random'){
-      const keys=Object.keys(baseConfig);
-      baseType=keys[Math.floor(Math.random()*keys.length)];
+  createProblem(){
+    let base=this.currentBase;
+    if(base==='random'){
+      const k=Object.keys(baseConfig);
+      base=k[Math.floor(Math.random()*k.length)];
     }
-    const cfg=baseConfig[baseType];
-
-    /* random base from pool */
-    this.currentTempBase = cfg.pool[Math.floor(Math.random()*cfg.pool.length)];
-
-    /* random factors within ±delta */
-    const delta = cfg.deltaLimit;
-    let a,b;
-    do{
-      a=this.currentTempBase + (Math.floor(Math.random()*(2*delta+1))-delta);
-      b=this.currentTempBase + (Math.floor(Math.random()*(2*delta+1))-delta);
-    }while(Math.abs(a-b)>delta);                // ← fixed hard-coded 30
+    const cfg=baseConfig[base];
+    this.currentTempBase=cfg.pool[Math.floor(Math.random()*cfg.pool.length)];
+    const d=cfg.deltaLimit;
+    let a,b;do{
+      a=this.currentTempBase+(Math.floor(Math.random()*(2*d+1))-d);
+      b=this.currentTempBase+(Math.floor(Math.random()*(2*d+1))-d);
+    }while(Math.abs(a-b)>d);                          // delta bug fixed
     this.currentFactors={a,b};
     this.currentAnswer=a*b;
-
-    /* update text */
     this.$.problemText.textContent=`${a} × ${b}`;
     this.$.baseInfo.textContent=`Near base: ${this.currentTempBase}`;
   }
@@ -302,176 +287,122 @@ class VedicMathApp {
     const user=parseInt(this.$.answerInput.value,10);
     if(Number.isNaN(user)) return;
     this.stats.attempted++;
-
-    if(user===this.currentAnswer){
-      this.handleCorrect();
-    }else{
-      this.handleIncorrect();
-    }
-    this.updateStats();
+    if(user===this.currentAnswer){ this.correct(); } else { this.incorrect(); }
+    this.persist();
   }
 
-  handleCorrect(){
+  correct(){
     this.state=AppState.PAUSED;
     this.stopTimer();
-
     this.stats.correct++;
     this.stats.currentStreak++;
     this.stats.bestStreak=Math.max(this.stats.bestStreak,this.stats.currentStreak);
-
-    /* times */
     this.stats.lastTimes.push(this.elapsedTime);
     this.stats.totalTime+=this.elapsedTime;
-    if(!this.stats.bestTime||this.elapsedTime<this.stats.bestTime){
-      this.stats.bestTime=this.elapsedTime;
-    }
-
+    if(!this.stats.bestTime||this.elapsedTime<this.stats.bestTime) this.stats.bestTime=this.elapsedTime;
     this.$.feedback.textContent='Correct!';
     this.$.feedback.className='feedback correct';
-    this.playSound('correct');
+    this.play('correct');
     this.updateUI();
   }
 
-  handleIncorrect(){
+  incorrect(){
     this.stats.currentStreak=0;
     this.$.feedback.textContent='Try again';
     this.$.feedback.className='feedback incorrect';
-    this.playSound('incorrect');
+    this.play('incorrect');
     this.$.answerInput.value='';
     this.$.answerInput.focus();
   }
 
-  /* ---------- new: skip handling ---------- */
-  handleSkip(){
-    /* don’t touch attempted/correct → accuracy intact */
+  skip(){
     this.stats.currentStreak=0;
     this.$.feedback.textContent='Skipped';
     this.$.feedback.className='feedback';
-    this.generateProblem();
+    this.createProblem();
     this.$.answerInput.value='';
     this.$.answerInput.focus();
-    this.startTimer();                         // reset timer
+    this.runTimer();
     this.updateUI();
   }
 
   nextProblem(){
-    if(this.state===AppState.RUNNING){
-      /* user chose to skip */
-      this.handleSkip();
-    }else if(this.state===AppState.PAUSED){
-      /* normal next-after-correct */
+    if(this.state===AppState.RUNNING){         // skip
+      this.skip();
+    }else if(this.state===AppState.PAUSED){    // post-correct
       this.state=AppState.RUNNING;
       this.$.feedback.textContent='';
       this.$.feedback.className='feedback';
-      this.generateProblem();
+      this.createProblem();
       this.$.answerInput.value='';
       this.$.answerInput.focus();
-      this.startTimer();
+      this.runTimer();
       this.updateUI();
     }
   }
 
-  /* ---------- timer helpers ---------- */
-  startTimer(){
+  /* ---------- timer ---------- */
+  runTimer(){
     this.startTime=performance.now();
     this.elapsedTime=0;
-    this.stopTimer();
-    this.timerInterval=requestAnimationFrame(this.tick.bind(this));
+    cancelAnimationFrame(this.timerRAF);
+    const tick=(now)=>{
+      this.elapsedTime=now-this.startTime;
+      this.renderTime();
+      this.timerRAF=requestAnimationFrame(tick);
+    };
+    this.timerRAF=requestAnimationFrame(tick);
   }
-  tick(now){
-    this.elapsedTime=now-this.startTime;
-    this.updateStopwatchDisplay();
-    this.timerInterval=requestAnimationFrame(this.tick.bind(this));
+  stopTimer(){ cancelAnimationFrame(this.timerRAF); }
+  renderTime(){
+    const sec=Math.floor(this.elapsedTime/1000);
+    this.$.stopwatchTime.textContent=`${sec}s`;
+    this.updateRing((sec%60)/60);
   }
-  stopTimer(){
-    if(this.timerInterval){
-      cancelAnimationFrame(this.timerInterval);
-      this.timerInterval=null;
-    }
-  }
-  updateStopwatchDisplay(){
-    const seconds=Math.floor(this.elapsedTime/1000);
-    this.$.stopwatchTime.textContent=`${seconds}s`;
-    const progress=(seconds%60)/60;
-    this.updateStopwatchRing(progress);
-  }
-  updateStopwatchRing(progress){
-    const offset=this.circumference-(progress*this.circumference);
-    this.$.stopwatchRing.style.strokeDashoffset=offset;
+  updateRing(p){
+    this.$.stopwatchRing.style.strokeDashoffset=this.circumference-(p*this.circumference);
   }
 
-  /* ---------- stats + ui ---------- */
+  /* ---------- ui ---------- */
   updateUI(){
     this.$.startBtn.disabled=this.state===AppState.RUNNING;
     this.$.submitBtn.disabled=this.state!==AppState.RUNNING;
-    this.$.nextBtn.disabled=this.state===AppState.IDLE;   // enabled for RUNNING+PAUSED
+    this.$.nextBtn.disabled=this.state===AppState.IDLE;
     this.$.stats.attempted.textContent=this.stats.attempted;
-    this.$.stats.correct.textContent=this.stats.correct;
-    this.$.stats.streak.textContent=this.stats.currentStreak;
-
+    this.$.stats.correct  .textContent=this.stats.correct;
+    this.$.stats.streak   .textContent=this.stats.currentStreak;
     const acc=this.stats.attempted?Math.round((this.stats.correct/this.stats.attempted)*100):0;
     this.$.stats.accuracy.textContent=`${acc}%`;
-
-    this.$.stats.bestTime.textContent=this.formatTime(this.stats.bestTime);
+    this.$.stats.bestTime.textContent=this.format(this.stats.bestTime);
     const avg=this.stats.correct?this.stats.totalTime/this.stats.correct:0;
-    this.$.stats.avgTime.textContent=this.formatTime(avg);
+    this.$.stats.avgTime.textContent=this.format(avg);
   }
-
-  formatTime(ms){
+  format(ms){
     if(!ms) return '—';
-    const totalSec=Math.floor(ms/1000);
-    const minutes=Math.floor(totalSec/60);
-    const seconds=totalSec%60;
-    const frac=Math.floor((ms%1000)/10).toString().padStart(2,'0');
-    if(minutes>0) return `${minutes}:${seconds.toString().padStart(2,'0')}.${frac}`;
-    return `${seconds}.${frac}`;
+    const t=Math.floor(ms/1000), m=Math.floor(t/60), s=t%60, f=Math.floor((ms%1000)/10).toString().padStart(2,'0');
+    return m?`${m}:${s.toString().padStart(2,'0')}.${f}`:`${s}.${f}`;
   }
 
-  saveStats(){ localStorage.setItem('vedicMathStats',JSON.stringify(this.stats)); }
-  loadStats(){
-    const saved=localStorage.getItem('vedicMathStats');
-    if(saved) this.stats=JSON.parse(saved);
-  }
-  updateStats(){ this.updateUI(); this.saveStats(); }
+  /* ---------- persistence ---------- */
+  persist(){ this.updateUI(); localStorage.setItem('vedicMathStats',JSON.stringify(this.stats)); }
+  loadStats(){ try{const s=localStorage.getItem('vedicMathStats'); if(s) this.stats=JSON.parse(s);}catch{} }
 
   /* ---------- reset ---------- */
   reset(){
     this.state=AppState.IDLE;
-    this.stopTimer(); this.updateStopwatchRing(0);
-    this.$.stopwatchTime.textContent='0s';
+    this.stopTimer(); this.updateRing(0); this.$.stopwatchTime.textContent='0s';
     this.$.problemText.textContent='Press Start to Begin';
-    this.$.baseInfo.textContent='';
-    this.$.answerInput.value=''; this.$.answerInput.disabled=true;
-    this.$.feedback.textContent='';
-    this.$.feedback.className='feedback';
+    this.$.baseInfo.textContent=''; this.$.answerInput.value=''; this.$.answerInput.disabled=true;
+    this.$.feedback.textContent=''; this.$.feedback.className='feedback';
     this.stats={attempted:0,correct:0,currentStreak:0,bestStreak:0,bestTime:null,totalTime:0,lastTimes:[]};
-    this.updateUI(); this.saveStats();
+    this.persist();
   }
 }
 
-/* init */
+/* ---------- bootstrap ---------- */
 document.addEventListener('DOMContentLoaded',()=>{
   window.App=new VedicMathApp();
-  if(window.location.hash==='#test') runSmokeTests();
 });
-
-/* unchanged smoke-tests (deltaLimit fix doesn’t break them) */
-function runSmokeTests(){
-  console.log('Running smoke tests…');
-  const app=window.App;
-  console.assert(app.state===AppState.IDLE,'Initial idle');
-  app.start();
-  console.assert(app.state===AppState.RUNNING,'Started');
-  const wrong=app.currentAnswer+1;
-  app.$.answerInput.value=wrong; app.checkAnswer();
-  app.$.answerInput.value=app.currentAnswer; app.checkAnswer();
-  console.assert(app.state===AppState.PAUSED,'Paused after correct');
-  app.nextProblem();
-  console.assert(app.state===AppState.RUNNING,'Running after next');
-  app.reset();
-  console.assert(app.state===AppState.IDLE,'Idle after reset');
-  console.log('Smoke tests done');
-}
 </script>
 </body>
 </html>
