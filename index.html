@@ -19,12 +19,14 @@
             --progress: var(--primary);
         }
 
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
+
 
         body {
             background-color: var(--secondary);
@@ -36,11 +38,13 @@
             color: var(--text);
         }
 
+
         .container {
             max-width: 640px;
             width: 100%;
             margin: 0 auto;
         }
+
 
         .card {
             background: var(--card-bg);
@@ -51,9 +55,11 @@
             overflow: hidden;
         }
 
+
         .base-selector {
             margin-bottom: 28px;
         }
+
 
         .base-selector h2 {
             font-size: 1.2rem;
@@ -63,11 +69,13 @@
             font-weight: 500;
         }
 
+
         .radio-group {
             display: flex;
             justify-content: center;
             gap: 20px;
         }
+
 
         .radio-option {
             display: flex;
@@ -75,9 +83,11 @@
             align-items: center;
         }
 
+
         .radio-option input {
             display: none;
         }
+
 
         .radio-option label {
             width: 60px;
@@ -95,6 +105,7 @@
             border: 2px solid var(--border);
         }
 
+
         .radio-option input:checked + label {
             background: var(--primary);
             color: white;
@@ -103,17 +114,20 @@
             box-shadow: 0 4px 8px var(--shadow);
         }
 
+
         .radio-option span {
             margin-top: 6px;
             font-size: 0.9rem;
             color: var(--light-text);
         }
 
+
         .problem-display {
             text-align: center;
             margin: 30px 0;
             min-height: 100px;
         }
+
 
         .problem {
             font-size: 2.3rem;
@@ -122,17 +136,20 @@
             margin-bottom: 30px;
         }
 
+
         .base-info {
             font-size: 1.1rem;
             color: var(--primary);
             margin-top: 10px;
         }
 
+
         .answer-input {
             width: 100%;
             max-width: 280px;
             margin: 0 auto 30px;
         }
+
 
         .answer-input input {
             width: 100%;
@@ -145,10 +162,12 @@
             transition: border-color 0.3s;
         }
 
+
         .answer-input input:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
         }
+
 
         .controls {
             display: flex;
@@ -156,6 +175,7 @@
             gap: 12px;
             margin-bottom: 30px;
         }
+
 
         .btn {
             padding: 12px 20px;
@@ -174,20 +194,24 @@
             min-width: 100px;
         }
 
+
         .btn:hover {
             background: var(--primary-light);
             transform: translateY(-2px);
         }
 
+
         .btn:active {
             transform: translateY(0);
         }
+
 
         .btn-secondary {
             background: var(--secondary);
             color: var(--primary);
             border: 2px solid var(--border);
         }
+
 
         .feedback {
             text-align: center;
@@ -197,15 +221,18 @@
             font-weight: 600;
         }
 
+
         .feedback.correct {
             color: var(--success);
             animation: pop 0.4s ease;
         }
 
+
         .feedback.incorrect {
             color: var(--error);
             animation: shake 0.5s ease;
         }
+
 
         @keyframes pop {
             0% { transform: scale(1); }
@@ -213,11 +240,13 @@
             100% { transform: scale(1); }
         }
 
+
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             20%, 60% { transform: translateX(-8px); }
             40%, 80% { transform: translateX(8px); }
         }
+
 
         .stats {
             background: var(--secondary);
@@ -226,15 +255,18 @@
             margin-top: 20px;
         }
 
+
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 16px;
         }
 
+
         .stat-item {
             text-align: center;
         }
+
 
         .stat-value {
             font-size: 1.8rem;
@@ -242,13 +274,15 @@
             color: var(--primary);
         }
 
+
         .stat-label {
             font-size: 0.9rem;
             color: var(--light-text);
             margin-top: 4px;
         }
 
-        .progress-ring {
+
+        .stopwatch-ring {
             position: absolute;
             top: 20px;
             right: 20px;
@@ -256,24 +290,39 @@
             height: 50px;
         }
 
-        .progress-ring-circle {
+
+        .stopwatch-ring-circle {
             transform: rotate(-90deg);
             transform-origin: 50% 50%;
         }
 
-        .progress-ring-bg {
+
+        .stopwatch-ring-bg {
             stroke: var(--border);
             stroke-width: 4;
             fill: none;
         }
 
-        .progress-ring-fill {
+
+        .stopwatch-ring-fill {
             stroke: var(--progress);
             stroke-width: 4;
             stroke-linecap: round;
             fill: none;
             transition: stroke-dashoffset 0.1s linear;
         }
+
+
+        .stopwatch-time {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
 
         .sound-toggle {
             position: absolute;
@@ -286,6 +335,7 @@
             font-size: 1.5rem;
         }
 
+
         .key-hint {
             position: absolute;
             bottom: 10px;
@@ -293,6 +343,7 @@
             font-size: 0.8rem;
             color: var(--light-text);
         }
+
 
         @media (max-width: 480px) {
             .card {
@@ -330,11 +381,12 @@
         <div class="card">
             <button class="sound-toggle" id="soundToggle" aria-label="Toggle sound">🔊</button>
             
-            <div class="progress-ring">
+            <div class="stopwatch-ring">
                 <svg width="50" height="50" viewBox="0 0 50 50">
-                    <circle class="progress-ring-bg" cx="25" cy="25" r="20"></circle>
-                    <circle class="progress-ring-fill" cx="25" cy="25" r="20" stroke-dasharray="125.6" stroke-dashoffset="125.6"></circle>
+                    <circle class="stopwatch-ring-bg" cx="25" cy="25" r="20"></circle>
+                    <circle class="stopwatch-ring-fill" cx="25" cy="25" r="20" stroke-dasharray="125.6" stroke-dashoffset="125.6"></circle>
                 </svg>
+                <div class="stopwatch-time" id="stopwatchTime">0s</div>
             </div>
             
             <div class="base-selector">
@@ -376,7 +428,7 @@
             
             <div class="controls">
                 <button class="btn" id="startBtn">Start</button>
-                <button class="btn" id="submitBtn" disabled>Submit </button>
+                <button class="btn" id="submitBtn" disabled>Submit</button>
                 <button class="btn btn-secondary" id="nextBtn" disabled>Next</button>
                 <button class="btn btn-secondary" id="resetBtn">Reset</button>
             </div>
@@ -410,7 +462,8 @@
                 </div>
             </div>
             
-           
+
+
         </div>
     </div>
     
@@ -454,6 +507,7 @@
                 this.startTime = null;
                 this.timerInterval = null;
                 this.elapsedTime = 0;
+                this.circumference = 125.6; // 2 * π * r (r=20)
                 
                 // Stats
                 this.stats = {
@@ -478,7 +532,8 @@
                     nextBtn: document.getElementById('nextBtn'),
                     resetBtn: document.getElementById('resetBtn'),
                     soundToggle: document.getElementById('soundToggle'),
-                    progressRing: document.querySelector('.progress-ring-fill'),
+                    stopwatchRing: document.querySelector('.stopwatch-ring-fill'),
+                    stopwatchTime: document.getElementById('stopwatchTime'),
                     stats: {
                         attempted: document.getElementById('attempted'),
                         correct: document.getElementById('correct'),
@@ -506,8 +561,8 @@
                 // Initialize AudioContext
                 this.initAudio();
                 
-                // Initialize progress ring
-                this.updateProgressRing(0);
+                // Initialize stopwatch ring
+                this.updateStopwatchRing(0);
             }
             
             setupEventListeners() {
@@ -635,22 +690,26 @@
                 
                 this.timerInterval = setInterval(() => {
                     this.elapsedTime = Date.now() - this.startTime;
-                    const progress = Math.min(this.elapsedTime / 30000, 1); // 30s max for progress ring
-                    this.updateProgressRing(progress);
+                    this.updateStopwatchDisplay();
                 }, 100);
             }
             
-            stopTimer() {
-                if (this.timerInterval) {
-                    clearInterval(this.timerInterval);
-                    this.timerInterval = null;
-                }
+            updateStopwatchDisplay() {
+                // Calculate seconds and milliseconds
+                const seconds = Math.floor(this.elapsedTime / 1000);
+                const fraction = Math.floor((this.elapsedTime % 1000) / 10);
+                
+                // Update the stopwatch time text
+                this.elements.stopwatchTime.textContent = `${seconds}s`;
+                
+                // Calculate ring progress (one full circle = 60 seconds)
+                const progress = (seconds % 60) / 60;
+                this.updateStopwatchRing(progress);
             }
             
-            updateProgressRing(progress) {
-                const circumference = 125.6; // 2 * π * r (r=20)
-                const offset = circumference - (progress * circumference);
-                this.elements.progressRing.style.strokeDashoffset = offset;
+            updateStopwatchRing(progress) {
+                const offset = this.circumference - (progress * this.circumference);
+                this.elements.stopwatchRing.style.strokeDashoffset = offset;
             }
             
             checkAnswer() {
@@ -714,36 +773,33 @@
                 this.elements.answerInput.focus();
             }
             
-        
             nextProblem() {
                 if (this.state !== AppState.PAUSED) return;
-
-                // Clear any existing timer interval before restarting
-                this.stopTimer();
-        
+                
                 this.state = AppState.RUNNING;
                 this.generateProblem();
                 this.elements.answerInput.value = '';
                 this.elements.answerInput.focus();
                 this.elements.feedback.textContent = '';
-           	    this.elements.feedback.className = 'feedback';
+                this.elements.feedback.className = 'feedback';
                 this.updateUI();
-
+                
                 // Start timer
                 this.startTimer();
             }
-
-
-
-
-
-
-
-
+            
+            stopTimer() {
+                if (this.timerInterval) {
+                    clearInterval(this.timerInterval);
+                    this.timerInterval = null;
+                }
+            }
+            
             reset() {
                 this.state = AppState.IDLE;
                 this.stopTimer();
-                this.updateProgressRing(0);
+                this.updateStopwatchRing(0);
+                this.elements.stopwatchTime.textContent = '0s';
                 
                 this.elements.problemText.textContent = 'Press Start to Begin';
                 this.elements.baseInfo.textContent = '';
@@ -822,6 +878,7 @@
             }
         }
 
+
         // Initialize app when DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
             window.App = new VedicMathApp();
@@ -831,6 +888,7 @@
                 runSmokeTests();
             }
         });
+
 
         // Smoke tests for UI flow
         function runSmokeTests() {
@@ -877,6 +935,3 @@
     </script>
 </body>
 </html>
-
-
-
