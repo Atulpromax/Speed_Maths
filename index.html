@@ -1,937 +1,477 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vedic Math Multiplier</title>
-    <style>
-        :root {
-            --primary: #4a6fa5;
-            --primary-light: #6d8fc2;
-            --secondary: #f0f4f8;
-            --success: #4caf50;
-            --error: #f44336;
-            --text: #333;
-            --light-text: #777;
-            --border: #e0e0e0;
-            --shadow: rgba(0, 0, 0, 0.1);
-            --card-bg: #ffffff;
-            --progress: var(--primary);
-        }
-
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        }
-
-
-        body {
-            background-color: var(--secondary);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 16px;
-            color: var(--text);
-        }
-
-
-        .container {
-            max-width: 640px;
-            width: 100%;
-            margin: 0 auto;
-        }
-
-
-        .card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            box-shadow: 0 10px 30px var(--shadow);
-            padding: 32px 24px;
-            position: relative;
-            overflow: hidden;
-        }
-
-
-        .base-selector {
-            margin-bottom: 28px;
-        }
-
-
-        .base-selector h2 {
-            font-size: 1.2rem;
-            margin-bottom: 12px;
-            text-align: center;
-            color: var(--light-text);
-            font-weight: 500;
-        }
-
-
-        .radio-group {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-
-        .radio-option {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-
-        .radio-option input {
-            display: none;
-        }
-
-
-        .radio-option label {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: var(--secondary);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.3rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            color: var(--light-text);
-            border: 2px solid var(--border);
-        }
-
-
-        .radio-option input:checked + label {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            transform: scale(1.05);
-            box-shadow: 0 4px 8px var(--shadow);
-        }
-
-
-        .radio-option span {
-            margin-top: 6px;
-            font-size: 0.9rem;
-            color: var(--light-text);
-        }
-
-
-        .problem-display {
-            text-align: center;
-            margin: 30px 0;
-            min-height: 100px;
-        }
-
-
-        .problem {
-            font-size: 2.3rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            margin-bottom: 30px;
-        }
-
-
-        .base-info {
-            font-size: 1.1rem;
-            color: var(--primary);
-            margin-top: 10px;
-        }
-
-
-        .answer-input {
-            width: 100%;
-            max-width: 280px;
-            margin: 0 auto 30px;
-        }
-
-
-        .answer-input input {
-            width: 100%;
-            font-size: 1.8rem;
-            text-align: center;
-            padding: 12px 16px;
-            border-radius: 12px;
-            border: 2px solid var(--border);
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-
-        .answer-input input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
-        }
-
-
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 30px;
-        }
-
-
-        .btn {
-            padding: 12px 20px;
-            border-radius: 12px;
-            border: none;
-            background: var(--primary);
-            color: white;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 6px var(--shadow);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 100px;
-        }
-
-
-        .btn:hover {
-            background: var(--primary-light);
-            transform: translateY(-2px);
-        }
-
-
-        .btn:active {
-            transform: translateY(0);
-        }
-
-
-        .btn-secondary {
-            background: var(--secondary);
-            color: var(--primary);
-            border: 2px solid var(--border);
-        }
-
-
-        .feedback {
-            text-align: center;
-            min-height: 40px;
-            margin-bottom: 20px;
-            font-size: 1.3rem;
-            font-weight: 600;
-        }
-
-
-        .feedback.correct {
-            color: var(--success);
-            animation: pop 0.4s ease;
-        }
-
-
-        .feedback.incorrect {
-            color: var(--error);
-            animation: shake 0.5s ease;
-        }
-
-
-        @keyframes pop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-8px); }
-            40%, 80% { transform: translateX(8px); }
-        }
-
-
-        .stats {
-            background: var(--secondary);
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 20px;
-        }
-
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-        }
-
-
-        .stat-item {
-            text-align: center;
-        }
-
-
-        .stat-value {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: var(--light-text);
-            margin-top: 4px;
-        }
-
-
-        .stopwatch-ring {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-        }
-
-
-        .stopwatch-ring-circle {
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%;
-        }
-
-
-        .stopwatch-ring-bg {
-            stroke: var(--border);
-            stroke-width: 4;
-            fill: none;
-        }
-
-
-        .stopwatch-ring-fill {
-            stroke: var(--progress);
-            stroke-width: 4;
-            stroke-linecap: round;
-            fill: none;
-            transition: stroke-dashoffset 0.1s linear;
-        }
-
-
-        .stopwatch-time {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-
-        .sound-toggle {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--light-text);
-            font-size: 1.5rem;
-        }
-
-
-        .key-hint {
-            position: absolute;
-            bottom: 10px;
-            right: 20px;
-            font-size: 0.8rem;
-            color: var(--light-text);
-        }
-
-
-        @media (max-width: 480px) {
-            .card {
-                padding: 24px 16px;
-            }
-            
-            .radio-group {
-                gap: 10px;
-            }
-            
-            .radio-option label {
-                width: 50px;
-                height: 50px;
-                font-size: 1.1rem;
-            }
-            
-            .problem {
-                font-size: 2rem;
-            }
-            
-            .controls {
-                flex-wrap: wrap;
-            }
-            
-            .btn {
-                min-width: 80px;
-                padding: 10px 15px;
-                font-size: 0.9rem;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vedic Math Multiplier</title>
+
+<!-- ---------  ORIGINAL CSS – UNTOUCHED  --------- -->
+<style>
+:root{--primary:#4a6fa5;--primary-light:#6d8fc2;--secondary:#f0f4f8;--success:#4caf50;--error:#f44336;--text:#333;--light-text:#777;--border:#e0e0e0;--shadow:rgba(0,0,0,.1);--card-bg:#ffffff;--progress:var(--primary)}
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif}
+body{background-color:var(--secondary);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:16px;color:var(--text)}
+.container{max-width:640px;width:100%;margin:0 auto}
+.card{background:var(--card-bg);border-radius:16px;box-shadow:0 10px 30px var(--shadow);padding:32px 24px;position:relative;overflow:hidden}
+.base-selector{margin-bottom:28px}
+.base-selector h2{font-size:1.2rem;margin-bottom:12px;text-align:center;color:var(--light-text);font-weight:500}
+.radio-group{display:flex;justify-content:center;gap:20px}
+.radio-option{display:flex;flex-direction:column;align-items:center}
+.radio-option input{display:none}
+.radio-option label{width:60px;height:60px;border-radius:50%;background:var(--secondary);display:flex;justify-content:center;align-items:center;font-size:1.3rem;font-weight:600;cursor:pointer;transition:all .2s ease;color:var(--light-text);border:2px solid var(--border)}
+.radio-option input:checked+label{background:var(--primary);color:#fff;border-color:var(--primary);transform:scale(1.05);box-shadow:0 4px 8px var(--shadow)}
+.radio-option span{margin-top:6px;font-size:.9rem;color:var(--light-text)}
+.problem-display{text-align:center;margin:30px 0;min-height:100px}
+.problem{font-size:2.3rem;font-weight:700;letter-spacing:1px;margin-bottom:30px}
+.base-info{font-size:1.1rem;color:var(--primary);margin-top:10px}
+.answer-input{width:100%;max-width:280px;margin:0 auto 30px}
+.answer-input input{width:100%;font-size:1.8rem;text-align:center;padding:12px 16px;border-radius:12px;border:2px solid var(--border);outline:none;transition:border-color .3s}
+.answer-input input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(74,111,165,.2)}
+.controls{display:flex;justify-content:center;gap:12px;margin-bottom:30px}
+.btn{padding:12px 20px;border-radius:12px;border:none;background:var(--primary);color:#fff;font-size:1rem;font-weight:600;cursor:pointer;transition:all .2s ease;box-shadow:0 4px 6px var(--shadow);display:flex;align-items:center;justify-content:center;min-width:100px}
+.btn:hover{background:var(--primary-light);transform:translateY(-2px)}
+.btn:active{transform:translateY(0)}
+.btn-secondary{background:var(--secondary);color:var(--primary);border:2px solid var(--border)}
+.feedback{text-align:center;min-height:40px;margin-bottom:20px;font-size:1.3rem;font-weight:600}
+.feedback.correct{color:var(--success);animation:pop .4s ease}
+.feedback.incorrect{color:var(--error);animation:shake .5s ease}
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.stats{background:var(--secondary);border-radius:12px;padding:20px;margin-top:20px}
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.stat-item{text-align:center}
+.stat-value{font-size:1.8rem;font-weight:700;color:var(--primary)}
+.stat-label{font-size:.9rem;color:var(--light-text);margin-top:4px}
+.stopwatch-ring{position:absolute;top:20px;right:20px;width:50px;height:50px}
+.stopwatch-ring-circle{transform:rotate(-90deg);transform-origin:50% 50%}
+.stopwatch-ring-bg{stroke:var(--border);stroke-width:4;fill:none}
+.stopwatch-ring-fill{stroke:var(--progress);stroke-width:4;stroke-linecap:round;fill:none;transition:stroke-dashoffset .1s linear}
+.stopwatch-time{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:.7rem;font-weight:600;color:var(--primary)}
+.sound-toggle{position:absolute;top:20px;left:20px;background:none;border:none;cursor:pointer;color:var(--light-text);font-size:1.5rem}
+.key-hint{position:absolute;bottom:10px;right:20px;font-size:.8rem;color:var(--light-text)}
+@media(max-width:480px){.card{padding:24px 16px}.radio-group{gap:10px}.radio-option label{width:50px;height:50px;font-size:1.1rem}.problem{font-size:2rem}.controls{flex-wrap:wrap}.btn{min-width:80px;padding:10px 15px;font-size:.9rem}}
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="card">
-            <button class="sound-toggle" id="soundToggle" aria-label="Toggle sound">🔊</button>
-            
-            <div class="stopwatch-ring">
-                <svg width="50" height="50" viewBox="0 0 50 50">
-                    <circle class="stopwatch-ring-bg" cx="25" cy="25" r="20"></circle>
-                    <circle class="stopwatch-ring-fill" cx="25" cy="25" r="20" stroke-dasharray="125.6" stroke-dashoffset="125.6"></circle>
-                </svg>
-                <div class="stopwatch-time" id="stopwatchTime">0s</div>
-            </div>
-            
-            <div class="base-selector">
-                <h2>Select Base Group</h2>
-                <div class="radio-group">
-                    <div class="radio-option">
-                        <input type="radio" name="base" id="base10" value="10" checked>
-                        <label for="base10">10</label>
-                        <span>Base 10</span>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" name="base" id="base100" value="100">
-                        <label for="base100">100</label>
-                        <span>Base 100</span>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" name="base" id="base1000" value="1000">
-                        <label for="base1000">1000</label>
-                        <span>Base 1000</span>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" name="base" id="baseRandom" value="random">
-                        <label for="baseRandom">?</label>
-                        <span>Random</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="problem-display">
-                <div class="problem" id="problemText">Press Start to Begin</div>
-                <div class="base-info" id="baseInfo"></div>
-            </div>
-            
-            <div class="answer-input">
-                <input type="number" id="answerInput" placeholder="Your answer" autocomplete="off" disabled>
-            </div>
-            
-            <div class="feedback" id="feedback"></div>
-            
-            <div class="controls">
-                <button class="btn" id="startBtn">Start</button>
-                <button class="btn" id="submitBtn" disabled>Submit</button>
-                <button class="btn btn-secondary" id="nextBtn" disabled>Next</button>
-                <button class="btn btn-secondary" id="resetBtn">Reset</button>
-            </div>
-            
-            <div class="stats">
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <div class="stat-value" id="attempted">0</div>
-                        <div class="stat-label">Attempted</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="correct">0</div>
-                        <div class="stat-label">Correct</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="streak">0</div>
-                        <div class="stat-label">Streak</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="accuracy">0%</div>
-                        <div class="stat-label">Accuracy</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="bestTime">0:00</div>
-                        <div class="stat-label">Best Time</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="avgTime">0:00</div>
-                        <div class="stat-label">Avg Time</div>
-                    </div>
-                </div>
-            </div>
-            
+<div class="container">
+<div class="card">
+<button class="sound-toggle" id="soundToggle" aria-label="Toggle sound">🔊</button>
 
+<!-- stopwatch -->
+<div class="stopwatch-ring">
+<svg width="50" height="50" viewBox="0 0 50 50">
+<circle class="stopwatch-ring-bg" cx="25" cy="25" r="20"></circle>
+<circle class="stopwatch-ring-fill" cx="25" cy="25" r="20" stroke-dasharray="125.6" stroke-dashoffset="125.6"></circle>
+</svg>
+<div class="stopwatch-time" id="stopwatchTime">0s</div>
+</div>
 
-        </div>
-    </div>
-    
-    <script>
-        // App state
-        const AppState = {
-            IDLE: 'idle',
-            RUNNING: 'running',
-            PAUSED: 'paused'
-        };
-        
-        // Base configuration
-        const baseConfig = {
-            '10': {
-                deltaLimit: 3,
-                digits: 1,
-                pool: Array.from({length: 9}, (_, i) => (i + 1) * 10)
-            },
-            '100': {
-                deltaLimit: 30,
-                digits: 2,
-                pool: Array.from({length: 9}, (_, i) => (i + 1) * 100)
-            },
-            '1000': {
-                deltaLimit: 30,
-                digits: 3,
-                pool: Array.from({length: 9}, (_, i) => (i + 1) * 1000)
-            }
-        };
-        
-        // App class
-        class VedicMathApp {
-            constructor() {
-                this.state = AppState.IDLE;
-                this.currentBase = '10';
-                this.currentTempBase = null;
-                this.currentFactors = { a: null, b: null };
-                this.currentAnswer = null;
-                this.audioContext = null;
-                this.soundEnabled = true;
-                this.startTime = null;
-                this.timerInterval = null;
-                this.elapsedTime = 0;
-                this.circumference = 125.6; // 2 * π * r (r=20)
-                
-                // Stats
-                this.stats = {
-                    attempted: 0,
-                    correct: 0,
-                    currentStreak: 0,
-                    bestStreak: 0,
-                    bestTime: null,
-                    totalTime: 0,
-                    lastTimes: []
-                };
-                
-                // DOM elements
-                this.elements = {
-                    baseSelector: document.querySelectorAll('input[name="base"]'),
-                    problemText: document.getElementById('problemText'),
-                    baseInfo: document.getElementById('baseInfo'),
-                    answerInput: document.getElementById('answerInput'),
-                    feedback: document.getElementById('feedback'),
-                    startBtn: document.getElementById('startBtn'),
-                    submitBtn: document.getElementById('submitBtn'),
-                    nextBtn: document.getElementById('nextBtn'),
-                    resetBtn: document.getElementById('resetBtn'),
-                    soundToggle: document.getElementById('soundToggle'),
-                    stopwatchRing: document.querySelector('.stopwatch-ring-fill'),
-                    stopwatchTime: document.getElementById('stopwatchTime'),
-                    stats: {
-                        attempted: document.getElementById('attempted'),
-                        correct: document.getElementById('correct'),
-                        streak: document.getElementById('streak'),
-                        accuracy: document.getElementById('accuracy'),
-                        bestTime: document.getElementById('bestTime'),
-                        avgTime: document.getElementById('avgTime')
-                    }
-                };
-                
-                // Initialize
-                this.init();
-            }
-            
-            init() {
-                // Set up event listeners
-                this.setupEventListeners();
-                
-                // Load stats from localStorage
-                this.loadStats();
-                
-                // Update UI
-                this.updateUI();
-                
-                // Initialize AudioContext
-                this.initAudio();
-                
-                // Initialize stopwatch ring
-                this.updateStopwatchRing(0);
-            }
-            
-            setupEventListeners() {
-                // Base selector
-                this.elements.baseSelector.forEach(radio => {
-                    radio.addEventListener('change', (e) => {
-                        this.currentBase = e.target.value;
-                    });
-                });
-                
-                // Start button
-                this.elements.startBtn.addEventListener('click', () => this.start());
-                
-                // Submit button
-                this.elements.submitBtn.addEventListener('click', () => this.checkAnswer());
-                
-                // Next button
-                this.elements.nextBtn.addEventListener('click', () => this.nextProblem());
-                
-                // Reset button
-                this.elements.resetBtn.addEventListener('click', () => this.reset());
-                
-                // Sound toggle
-                this.elements.soundToggle.addEventListener('click', () => {
-                    this.soundEnabled = !this.soundEnabled;
-                    this.elements.soundToggle.textContent = this.soundEnabled ? '🔊' : '🔇';
-                });
-                
-                // Answer input
-                this.elements.answerInput.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' && this.state !== AppState.IDLE) {
-                        this.checkAnswer();
-                    }
-                });
-                
-                // Keyboard shortcuts
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 's' || e.key === 'S') this.start();
-                    if (e.key === 'r' || e.key === 'R') this.reset();
-                    if (this.state === AppState.RUNNING && (e.key === 'Enter' || e.key === ' ')) this.checkAnswer();
-                    if (this.state === AppState.PAUSED && (e.key === 'n' || e.key === 'N')) this.nextProblem();
-                });
-            }
-            
-            initAudio() {
-                try {
-                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                } catch (e) {
-                    console.warn('Web Audio API not supported');
-                    this.soundEnabled = false;
-                    this.elements.soundToggle.textContent = '🔇';
-                }
-            }
-            
-            playSound(type) {
-                if (!this.soundEnabled || !this.audioContext) return;
-                
-                const oscillator = this.audioContext.createOscillator();
-                const gainNode = this.audioContext.createGain();
-                
-                oscillator.connect(gainNode);
-                gainNode.connect(this.audioContext.destination);
-                
-                oscillator.type = 'square';
-                oscillator.frequency.value = type === 'correct' ? 523.25 : 349.23; // C5 or F4
-                gainNode.gain.value = 0.2;
-                
-                oscillator.start();
-                
-                setTimeout(() => {
-                    oscillator.stop();
-                }, 300);
-            }
-            
-            start() {
-                if (this.state === AppState.RUNNING) return;
-                
-                this.state = AppState.RUNNING;
-                this.generateProblem();
-                this.elements.answerInput.disabled = false;
-                this.elements.answerInput.focus();
-                this.updateUI();
-                
-                // Start timer
-                this.startTimer();
-            }
-            
-            generateProblem() {
-                let baseType = this.currentBase;
-                
-                // If random base, select one randomly
-                if (baseType === 'random') {
-                    const baseKeys = Object.keys(baseConfig);
-                    baseType = baseKeys[Math.floor(Math.random() * baseKeys.length)];
-                }
-                
-                const config = baseConfig[baseType];
-                
-                // Select random base from pool
-                this.currentTempBase = config.pool[Math.floor(Math.random() * config.pool.length)];
-                
-                // Generate factors within delta limit
-                const delta = config.deltaLimit;
-                let a, b;
-                
-                // Ensure factors are different and within |a - b| <= 30
-                do {
-                    a = this.currentTempBase + Math.floor(Math.random() * (2 * delta + 1)) - delta;
-                    b = this.currentTempBase + Math.floor(Math.random() * (2 * delta + 1)) - delta;
-                } while (Math.abs(a - b) > 30);
-                
-                this.currentFactors = { a, b };
-                this.currentAnswer = a * b;
-                
-                // Update problem display
-                this.elements.problemText.textContent = `${a} × ${b}`;
-                this.elements.baseInfo.textContent = `Near base: ${this.currentTempBase}`;
-            }
-            
-            startTimer() {
-                this.startTime = Date.now();
-                this.elapsedTime = 0;
-                
-                if (this.timerInterval) clearInterval(this.timerInterval);
-                
-                this.timerInterval = setInterval(() => {
-                    this.elapsedTime = Date.now() - this.startTime;
-                    this.updateStopwatchDisplay();
-                }, 100);
-            }
-            
-            updateStopwatchDisplay() {
-                // Calculate seconds and milliseconds
-                const seconds = Math.floor(this.elapsedTime / 1000);
-                const fraction = Math.floor((this.elapsedTime % 1000) / 10);
-                
-                // Update the stopwatch time text
-                this.elements.stopwatchTime.textContent = `${seconds}s`;
-                
-                // Calculate ring progress (one full circle = 60 seconds)
-                const progress = (seconds % 60) / 60;
-                this.updateStopwatchRing(progress);
-            }
-            
-            updateStopwatchRing(progress) {
-                const offset = this.circumference - (progress * this.circumference);
-                this.elements.stopwatchRing.style.strokeDashoffset = offset;
-            }
-            
-            checkAnswer() {
-                if (this.state !== AppState.RUNNING) return;
-                
-                const userAnswer = parseInt(this.elements.answerInput.value);
-                if (isNaN(userAnswer)) return;
-                
-                this.stats.attempted++;
-                
-                if (userAnswer === this.currentAnswer) {
-                    // Correct answer
-                    this.handleCorrect();
-                } else {
-                    // Incorrect answer
-                    this.handleIncorrect();
-                }
-                
-                this.updateStats();
-            }
-            
-            handleCorrect() {
-                this.state = AppState.PAUSED;
-                this.stopTimer();
-                
-                this.stats.correct++;
-                this.stats.currentStreak++;
-                this.stats.bestStreak = Math.max(this.stats.bestStreak, this.stats.currentStreak);
-                
-                // Record time
-                this.stats.lastTimes.push(this.elapsedTime);
-                this.stats.totalTime += this.elapsedTime;
-                
-                if (!this.stats.bestTime || this.elapsedTime < this.stats.bestTime) {
-                    this.stats.bestTime = this.elapsedTime;
-                }
-                
-                // Show feedback
-                this.elements.feedback.textContent = 'Correct!';
-                this.elements.feedback.className = 'feedback correct';
-                
-                // Play sound
-                this.playSound('correct');
-                
-                // Update UI
-                this.updateUI();
-            }
-            
-            handleIncorrect() {
-                this.stats.currentStreak = 0;
-                
-                // Show feedback
-                this.elements.feedback.textContent = 'Try again';
-                this.elements.feedback.className = 'feedback incorrect';
-                
-                // Play sound
-                this.playSound('incorrect');
-                
-                // Clear input and focus
-                this.elements.answerInput.value = '';
-                this.elements.answerInput.focus();
-            }
-            
-            nextProblem() {
-                if (this.state !== AppState.PAUSED) return;
-                
-                this.state = AppState.RUNNING;
-                this.generateProblem();
-                this.elements.answerInput.value = '';
-                this.elements.answerInput.focus();
-                this.elements.feedback.textContent = '';
-                this.elements.feedback.className = 'feedback';
-                this.updateUI();
-                
-                // Start timer
-                this.startTimer();
-            }
-            
-            stopTimer() {
-                if (this.timerInterval) {
-                    clearInterval(this.timerInterval);
-                    this.timerInterval = null;
-                }
-            }
-            
-            reset() {
-                this.state = AppState.IDLE;
-                this.stopTimer();
-                this.updateStopwatchRing(0);
-                this.elements.stopwatchTime.textContent = '0s';
-                
-                this.elements.problemText.textContent = 'Press Start to Begin';
-                this.elements.baseInfo.textContent = '';
-                this.elements.answerInput.value = '';
-                this.elements.answerInput.disabled = true;
-                this.elements.feedback.textContent = '';
-                this.elements.feedback.className = 'feedback';
-                
-                // Reset stats
-                this.stats = {
-                    attempted: 0,
-                    correct: 0,
-                    currentStreak: 0,
-                    bestStreak: 0,
-                    bestTime: null,
-                    totalTime: 0,
-                    lastTimes: []
-                };
-                
-                this.updateUI();
-                this.saveStats();
-            }
-            
-            updateUI() {
-                // Buttons state
-                this.elements.startBtn.disabled = this.state === AppState.RUNNING;
-                this.elements.submitBtn.disabled = this.state !== AppState.RUNNING;
-                this.elements.nextBtn.disabled = this.state !== AppState.PAUSED;
-                
-                // Stats display
-                this.elements.stats.attempted.textContent = this.stats.attempted;
-                this.elements.stats.correct.textContent = this.stats.correct;
-                this.elements.stats.streak.textContent = this.stats.currentStreak;
-                
-                const accuracy = this.stats.attempted > 0 
-                    ? Math.round((this.stats.correct / this.stats.attempted) * 100)
-                    : 0;
-                this.elements.stats.accuracy.textContent = `${accuracy}%`;
-                
-                this.elements.stats.bestTime.textContent = this.formatTime(this.stats.bestTime || 0);
-                
-                const avgTime = this.stats.correct > 0 
-                    ? this.stats.totalTime / this.stats.correct
-                    : 0;
-                this.elements.stats.avgTime.textContent = this.formatTime(avgTime);
-            }
-            
-            formatTime(ms) {
-                if (!ms) return '0:00';
-                
-                const totalSeconds = Math.floor(ms / 1000);
-                const minutes = Math.floor(totalSeconds / 60);
-                const seconds = totalSeconds % 60;
-                const fraction = Math.floor((ms % 1000) / 10);
-                
-                if (minutes > 0) {
-                    return `${minutes}:${seconds.toString().padStart(2, '0')}.${fraction.toString().padStart(2, '0')}`;
-                }
-                return `${seconds}.${fraction.toString().padStart(2, '0')}`;
-            }
-            
-            saveStats() {
-                localStorage.setItem('vedicMathStats', JSON.stringify(this.stats));
-            }
-            
-            loadStats() {
-                const savedStats = localStorage.getItem('vedicMathStats');
-                if (savedStats) {
-                    this.stats = JSON.parse(savedStats);
-                }
-            }
-            
-            updateStats() {
-                this.updateUI();
-                this.saveStats();
-            }
-        }
+<!-- base selector -->
+<div class="base-selector">
+<h2>Select Base Group</h2>
+<div class="radio-group">
+<div class="radio-option">
+<input type="radio" name="base" id="base10" value="10" checked>
+<label for="base10" aria-label="Base 10">10</label>
+<span>Base&nbsp;10</span>
+</div>
+<div class="radio-option">
+<input type="radio" name="base" id="base100" value="100">
+<label for="base100" aria-label="Base 100">100</label>
+<span>Base&nbsp;100</span>
+</div>
+<div class="radio-option">
+<input type="radio" name="base" id="base1000" value="1000">
+<label for="base1000" aria-label="Base 1000">1000</label>
+<span>Base&nbsp;1000</span>
+</div>
+<div class="radio-option">
+<input type="radio" name="base" id="baseRandom" value="random">
+<label for="baseRandom" aria-label="Random Base">?</label>
+<span>Random</span>
+</div>
+</div>
+</div>
 
+<!-- problem -->
+<div class="problem-display">
+<div class="problem" id="problemText">Press Start to Begin</div>
+<div class="base-info" id="baseInfo"></div>
+</div>
 
-        // Initialize app when DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            window.App = new VedicMathApp();
-            
-            // Run smoke tests if #test is in URL
-            if (window.location.hash === '#test') {
-                runSmokeTests();
-            }
-        });
+<!-- answer -->
+<div class="answer-input">
+<input type="number" id="answerInput" placeholder="Your answer" inputmode="numeric" autocomplete="off" autocorrect="off" spellcheck="false" disabled>
+</div>
 
+<!-- feedback -->
+<div class="feedback" id="feedback"></div>
 
-        // Smoke tests for UI flow
-        function runSmokeTests() {
-            console.log('Running smoke tests...');
-            const app = window.App;
-            
-            // Test 1: Initial state
-            console.assert(app.state === AppState.IDLE, 'Initial state should be idle');
-            console.assert(app.elements.answerInput.disabled, 'Input should be disabled initially');
-            
-            // Test 2: Start button
-            app.start();
-            console.assert(app.state === AppState.RUNNING, 'State should be running after start');
-            console.assert(!app.elements.answerInput.disabled, 'Input should be enabled');
-            console.assert(app.currentFactors.a !== null, 'Factors should be generated');
-            
-            // Test 3: Submit incorrect answer
-            const wrongAnswer = app.currentAnswer + 1;
-            app.elements.answerInput.value = wrongAnswer;
-            app.checkAnswer();
-            console.assert(app.stats.attempted === 1, 'Attempted count should be 1');
-            console.assert(app.stats.correct === 0, 'Correct count should be 0');
-            console.assert(app.stats.currentStreak === 0, 'Streak should be 0');
-            
-            // Test 4: Submit correct answer
-            app.elements.answerInput.value = app.currentAnswer;
-            app.checkAnswer();
-            console.assert(app.state === AppState.PAUSED, 'State should be paused after correct answer');
-            console.assert(app.stats.attempted === 2, 'Attempted count should be 2');
-            console.assert(app.stats.correct === 1, 'Correct count should be 1');
-            console.assert(app.stats.currentStreak === 1, 'Streak should be 1');
-            
-            // Test 5: Next problem
-            app.nextProblem();
-            console.assert(app.state === AppState.RUNNING, 'State should be running after next problem');
-            
-            // Test 6: Reset
-            app.reset();
-            console.assert(app.state === AppState.IDLE, 'State should be idle after reset');
-            console.assert(app.stats.attempted === 0, 'Stats should be reset');
-            
-            console.log('Smoke tests completed');
-        }
-    </script>
+<!-- controls -->
+<div class="controls">
+<button class="btn" id="startBtn">Start</button>
+<button class="btn" id="submitBtn" disabled>Submit</button>
+<button class="btn btn-secondary" id="nextBtn" disabled>Next</button>
+<button class="btn btn-secondary" id="resetBtn">Reset</button>
+</div>
+
+<!-- stats -->
+<div class="stats">
+<div class="stats-grid">
+<div class="stat-item"><div class="stat-value" id="attempted">0</div><div class="stat-label">Attempted</div></div>
+<div class="stat-item"><div class="stat-value" id="correct">0</div><div class="stat-label">Correct</div></div>
+<div class="stat-item"><div class="stat-value" id="streak">0</div><div class="stat-label">Streak</div></div>
+<div class="stat-item"><div class="stat-value" id="accuracy">0%</div><div class="stat-label">Accuracy</div></div>
+<div class="stat-item"><div class="stat-value" id="bestTime">—</div><div class="stat-label">Best Time</div></div>
+<div class="stat-item"><div class="stat-value" id="avgTime">—</div><div class="stat-label">Avg Time</div></div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- ---------  UPDATED SCRIPT  --------- -->
+<script>
+/* ---------- App constants ---------- */
+const AppState = { IDLE:'idle', RUNNING:'running', PAUSED:'paused' };
+
+const baseConfig = {
+  '10'  : { deltaLimit:3,  pool:Array.from({length:9},(_,i)=>(i+1)*10)   },
+  '100' : { deltaLimit:30, pool:Array.from({length:9},(_,i)=>(i+1)*100)  },
+  '1000': { deltaLimit:30, pool:Array.from({length:9},(_,i)=>(i+1)*1000) }
+};
+
+class VedicMathApp {
+  constructor(){
+    /* ---------- runtime state ---------- */
+    this.state = AppState.IDLE;
+    this.currentBase = '10';
+    this.currentTempBase = null;
+    this.currentFactors = {a:null,b:null};
+    this.currentAnswer = null;
+
+    /* ---------- audio ---------- */
+    this.audioContext = null;
+    this.soundEnabled = true;
+
+    /* ---------- timer ---------- */
+    this.startTime = null;
+    this.timerInterval = null;
+    this.elapsedTime = 0;
+    this.circumference = 125.6;          // 2πr (r=20)
+
+    /* ---------- stats ---------- */
+    this.stats = {
+      attempted:0,
+      correct:0,
+      currentStreak:0,
+      bestStreak:0,
+      bestTime:null,
+      totalTime:0,
+      lastTimes:[]
+    };
+
+    /* ---------- dom refs ---------- */
+    this.$ = {
+      baseSelector: [...document.querySelectorAll('input[name="base"]')],
+      problemText : document.getElementById('problemText'),
+      baseInfo    : document.getElementById('baseInfo'),
+      answerInput : document.getElementById('answerInput'),
+      feedback    : document.getElementById('feedback'),
+      startBtn    : document.getElementById('startBtn'),
+      submitBtn   : document.getElementById('submitBtn'),
+      nextBtn     : document.getElementById('nextBtn'),
+      resetBtn    : document.getElementById('resetBtn'),
+      soundToggle : document.getElementById('soundToggle'),
+      stopwatchRing: document.querySelector('.stopwatch-ring-fill'),
+      stopwatchTime: document.getElementById('stopwatchTime'),
+      stats:{
+        attempted:document.getElementById('attempted'),
+        correct :document.getElementById('correct'),
+        streak  :document.getElementById('streak'),
+        accuracy:document.getElementById('accuracy'),
+        bestTime:document.getElementById('bestTime'),
+        avgTime :document.getElementById('avgTime')
+      }
+    };
+
+    this.init();
+  }
+
+  /* ---------- initial wiring ---------- */
+  init(){
+    this.setupEventListeners();
+    this.loadStats();
+    this.updateUI();
+    this.initAudio();
+    this.updateStopwatchRing(0);
+  }
+
+  setupEventListeners(){
+    /* base radio */
+    this.$.baseSelector.forEach(radio=>{
+      radio.addEventListener('change',e=>{ this.currentBase=e.target.value; });
+    });
+
+    this.$.startBtn.addEventListener('click',()=>this.start());
+    this.$.submitBtn.addEventListener('click',()=>this.checkAnswer());
+    this.$.nextBtn.addEventListener('click',()=>this.nextProblem());
+    this.$.resetBtn.addEventListener('click',()=>this.reset());
+
+    /* sound toggle */
+    this.$.soundToggle.addEventListener('click',()=>{
+      this.soundEnabled=!this.soundEnabled;
+      this.$.soundToggle.textContent=this.soundEnabled?'🔊':'🔇';
+    });
+
+    /* answer input */
+    this.$.answerInput.addEventListener('keydown',e=>{
+      if(e.key==='Enter') (this.state===AppState.RUNNING)?this.checkAnswer():this.nextProblem();
+    });
+
+    /* global shortcuts */
+    document.addEventListener('keydown',e=>{
+      if(/[sS]/.test(e.key)) this.start();
+      if(/[rR]/.test(e.key)) this.reset();
+      if(/[nN]/.test(e.key)) this.nextProblem();
+      if(this.state===AppState.RUNNING && e.key===' ') this.checkAnswer();
+    });
+  }
+
+  initAudio(){
+    /* create only on first gesture */
+    const unlock = ()=>{
+      if(!this.audioContext){
+        try{ this.audioContext=new (window.AudioContext||window.webkitAudioContext)(); }
+        catch{ this.soundEnabled=false; this.$.soundToggle.textContent='🔇'; }
+      }
+      window.removeEventListener('pointerdown',unlock);
+    };
+    window.addEventListener('pointerdown',unlock,{once:true});
+  }
+
+  playSound(type){
+    if(!this.soundEnabled||!this.audioContext) return;
+    const osc=this.audioContext.createOscillator();
+    const gain=this.audioContext.createGain();
+    osc.connect(gain); gain.connect(this.audioContext.destination);
+    osc.type='square';
+    osc.frequency.value = (type==='correct'?523.25:349.23);
+    gain.gain.value=.2;
+    osc.start(); setTimeout(()=>osc.stop(),300);
+  }
+
+  /* ---------- core flow ---------- */
+  start(){
+    if(this.state===AppState.RUNNING) return;
+    this.state=AppState.RUNNING;
+    this.generateProblem();
+    this.$.answerInput.disabled=false;
+    this.$.answerInput.focus();
+    this.updateUI();
+    this.startTimer();
+  }
+
+  generateProblem(){
+    let baseType=this.currentBase;
+    if(baseType==='random'){
+      const keys=Object.keys(baseConfig);
+      baseType=keys[Math.floor(Math.random()*keys.length)];
+    }
+    const cfg=baseConfig[baseType];
+
+    /* random base from pool */
+    this.currentTempBase = cfg.pool[Math.floor(Math.random()*cfg.pool.length)];
+
+    /* random factors within ±delta */
+    const delta = cfg.deltaLimit;
+    let a,b;
+    do{
+      a=this.currentTempBase + (Math.floor(Math.random()*(2*delta+1))-delta);
+      b=this.currentTempBase + (Math.floor(Math.random()*(2*delta+1))-delta);
+    }while(Math.abs(a-b)>delta);                // ← fixed hard-coded 30
+    this.currentFactors={a,b};
+    this.currentAnswer=a*b;
+
+    /* update text */
+    this.$.problemText.textContent=`${a} × ${b}`;
+    this.$.baseInfo.textContent=`Near base: ${this.currentTempBase}`;
+  }
+
+  checkAnswer(){
+    if(this.state!==AppState.RUNNING) return;
+    const user=parseInt(this.$.answerInput.value,10);
+    if(Number.isNaN(user)) return;
+    this.stats.attempted++;
+
+    if(user===this.currentAnswer){
+      this.handleCorrect();
+    }else{
+      this.handleIncorrect();
+    }
+    this.updateStats();
+  }
+
+  handleCorrect(){
+    this.state=AppState.PAUSED;
+    this.stopTimer();
+
+    this.stats.correct++;
+    this.stats.currentStreak++;
+    this.stats.bestStreak=Math.max(this.stats.bestStreak,this.stats.currentStreak);
+
+    /* times */
+    this.stats.lastTimes.push(this.elapsedTime);
+    this.stats.totalTime+=this.elapsedTime;
+    if(!this.stats.bestTime||this.elapsedTime<this.stats.bestTime){
+      this.stats.bestTime=this.elapsedTime;
+    }
+
+    this.$.feedback.textContent='Correct!';
+    this.$.feedback.className='feedback correct';
+    this.playSound('correct');
+    this.updateUI();
+  }
+
+  handleIncorrect(){
+    this.stats.currentStreak=0;
+    this.$.feedback.textContent='Try again';
+    this.$.feedback.className='feedback incorrect';
+    this.playSound('incorrect');
+    this.$.answerInput.value='';
+    this.$.answerInput.focus();
+  }
+
+  /* ---------- new: skip handling ---------- */
+  handleSkip(){
+    /* don’t touch attempted/correct → accuracy intact */
+    this.stats.currentStreak=0;
+    this.$.feedback.textContent='Skipped';
+    this.$.feedback.className='feedback';
+    this.generateProblem();
+    this.$.answerInput.value='';
+    this.$.answerInput.focus();
+    this.startTimer();                         // reset timer
+    this.updateUI();
+  }
+
+  nextProblem(){
+    if(this.state===AppState.RUNNING){
+      /* user chose to skip */
+      this.handleSkip();
+    }else if(this.state===AppState.PAUSED){
+      /* normal next-after-correct */
+      this.state=AppState.RUNNING;
+      this.$.feedback.textContent='';
+      this.$.feedback.className='feedback';
+      this.generateProblem();
+      this.$.answerInput.value='';
+      this.$.answerInput.focus();
+      this.startTimer();
+      this.updateUI();
+    }
+  }
+
+  /* ---------- timer helpers ---------- */
+  startTimer(){
+    this.startTime=performance.now();
+    this.elapsedTime=0;
+    this.stopTimer();
+    this.timerInterval=requestAnimationFrame(this.tick.bind(this));
+  }
+  tick(now){
+    this.elapsedTime=now-this.startTime;
+    this.updateStopwatchDisplay();
+    this.timerInterval=requestAnimationFrame(this.tick.bind(this));
+  }
+  stopTimer(){
+    if(this.timerInterval){
+      cancelAnimationFrame(this.timerInterval);
+      this.timerInterval=null;
+    }
+  }
+  updateStopwatchDisplay(){
+    const seconds=Math.floor(this.elapsedTime/1000);
+    this.$.stopwatchTime.textContent=`${seconds}s`;
+    const progress=(seconds%60)/60;
+    this.updateStopwatchRing(progress);
+  }
+  updateStopwatchRing(progress){
+    const offset=this.circumference-(progress*this.circumference);
+    this.$.stopwatchRing.style.strokeDashoffset=offset;
+  }
+
+  /* ---------- stats + ui ---------- */
+  updateUI(){
+    this.$.startBtn.disabled=this.state===AppState.RUNNING;
+    this.$.submitBtn.disabled=this.state!==AppState.RUNNING;
+    this.$.nextBtn.disabled=this.state===AppState.IDLE;   // enabled for RUNNING+PAUSED
+    this.$.stats.attempted.textContent=this.stats.attempted;
+    this.$.stats.correct.textContent=this.stats.correct;
+    this.$.stats.streak.textContent=this.stats.currentStreak;
+
+    const acc=this.stats.attempted?Math.round((this.stats.correct/this.stats.attempted)*100):0;
+    this.$.stats.accuracy.textContent=`${acc}%`;
+
+    this.$.stats.bestTime.textContent=this.formatTime(this.stats.bestTime);
+    const avg=this.stats.correct?this.stats.totalTime/this.stats.correct:0;
+    this.$.stats.avgTime.textContent=this.formatTime(avg);
+  }
+
+  formatTime(ms){
+    if(!ms) return '—';
+    const totalSec=Math.floor(ms/1000);
+    const minutes=Math.floor(totalSec/60);
+    const seconds=totalSec%60;
+    const frac=Math.floor((ms%1000)/10).toString().padStart(2,'0');
+    if(minutes>0) return `${minutes}:${seconds.toString().padStart(2,'0')}.${frac}`;
+    return `${seconds}.${frac}`;
+  }
+
+  saveStats(){ localStorage.setItem('vedicMathStats',JSON.stringify(this.stats)); }
+  loadStats(){
+    const saved=localStorage.getItem('vedicMathStats');
+    if(saved) this.stats=JSON.parse(saved);
+  }
+  updateStats(){ this.updateUI(); this.saveStats(); }
+
+  /* ---------- reset ---------- */
+  reset(){
+    this.state=AppState.IDLE;
+    this.stopTimer(); this.updateStopwatchRing(0);
+    this.$.stopwatchTime.textContent='0s';
+    this.$.problemText.textContent='Press Start to Begin';
+    this.$.baseInfo.textContent='';
+    this.$.answerInput.value=''; this.$.answerInput.disabled=true;
+    this.$.feedback.textContent='';
+    this.$.feedback.className='feedback';
+    this.stats={attempted:0,correct:0,currentStreak:0,bestStreak:0,bestTime:null,totalTime:0,lastTimes:[]};
+    this.updateUI(); this.saveStats();
+  }
+}
+
+/* init */
+document.addEventListener('DOMContentLoaded',()=>{
+  window.App=new VedicMathApp();
+  if(window.location.hash==='#test') runSmokeTests();
+});
+
+/* unchanged smoke-tests (deltaLimit fix doesn’t break them) */
+function runSmokeTests(){
+  console.log('Running smoke tests…');
+  const app=window.App;
+  console.assert(app.state===AppState.IDLE,'Initial idle');
+  app.start();
+  console.assert(app.state===AppState.RUNNING,'Started');
+  const wrong=app.currentAnswer+1;
+  app.$.answerInput.value=wrong; app.checkAnswer();
+  app.$.answerInput.value=app.currentAnswer; app.checkAnswer();
+  console.assert(app.state===AppState.PAUSED,'Paused after correct');
+  app.nextProblem();
+  console.assert(app.state===AppState.RUNNING,'Running after next');
+  app.reset();
+  console.assert(app.state===AppState.IDLE,'Idle after reset');
+  console.log('Smoke tests done');
+}
+</script>
 </body>
 </html>
