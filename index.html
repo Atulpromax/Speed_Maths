@@ -2,303 +2,209 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Vedic Math Drills - iPhone Optimized</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vedic Math Multiplier</title>
     <style>
+        :root {
+            --primary: #4a6fa5;
+            --primary-light: #6d8fc2;
+            --secondary: #f0f4f8;
+            --success: #4caf50;
+            --error: #f44336;
+            --text: #333;
+            --light-text: #777;
+            --border: #e0e0e0;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --card-bg: #ffffff;
+            --progress: var(--primary);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            color: #333;
-            line-height: 1.6;
+            background-color: var(--secondary);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 10px;
-            touch-action: manipulation;
+            padding: 16px;
+            color: var(--text);
         }
 
         .container {
+            max-width: 640px;
             width: 100%;
-            max-width: 375px; /* Optimized for iPhone 15 */
             margin: 0 auto;
-            padding: 5px;
         }
 
-        .app-card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px var(--shadow);
+            padding: 32px 24px;
+            position: relative;
             overflow: hidden;
-            position: relative;
-        }
-
-        .header {
-            background: linear-gradient(to right, #4a00e0, #8e2de2);
-            color: white;
-            padding: 15px 15px 10px;
-            text-align: center;
-            position: relative;
-        }
-
-        .header h1 {
-            font-size: 1.4rem; /* Slightly smaller for better fit */
-            font-weight: 700;
-            margin-bottom: 3px;
-            letter-spacing: 0.3px;
-            padding: 0 40px; /* Space for sound button */
-        }
-
-        .header p {
-            font-size: 0.8rem; /* Smaller for better fit */
-            opacity: 0.9;
-            max-width: 90%;
-            margin: 0 auto;
-            line-height: 1.3;
-            padding: 0 20px; /* Prevent text overflow */
         }
 
         .base-selector {
+            margin-bottom: 28px;
+        }
+
+        .base-selector h2 {
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            text-align: center;
+            color: var(--light-text);
+            font-weight: 500;
+        }
+
+        .radio-group {
             display: flex;
             justify-content: center;
-            flex-wrap: wrap;
-            gap: 6px; /* Reduced gap */
-            padding: 10px 8px; /* Reduced padding */
-            background: #f8f9fa;
-            border-bottom: 1px solid #eee;
+            gap: 20px;
         }
 
-        .base-btn {
-            padding: 8px 10px; /* Smaller padding */
-            background: white;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
+        .radio-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .radio-option input {
+            display: none;
+        }
+
+        .radio-option label {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--secondary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.3rem;
             font-weight: 600;
-            font-size: 0.9rem; /* Smaller font */
-            color: #5a5a5a;
             cursor: pointer;
-            transition: all 0.3s ease;
-            flex: 1;
-            min-width: 65px; /* Smaller min-width */
-            text-align: center;
+            transition: all 0.2s ease;
+            color: var(--light-text);
+            border: 2px solid var(--border);
         }
 
-        .base-btn.active {
-            background: #4a00e0;
+        .radio-option input:checked + label {
+            background: var(--primary);
             color: white;
-            border-color: #4a00e0;
-            box-shadow: 0 3px 8px rgba(74, 0, 224, 0.25);
+            border-color: var(--primary);
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px var(--shadow);
         }
 
-        .problem-container {
-            padding: 15px 12px 12px; /* Reduced padding */
-            text-align: center;
-            background: white;
+        .radio-option span {
+            margin-top: 6px;
+            font-size: 0.9rem;
+            color: var(--light-text);
         }
 
         .problem-display {
-            font-size: 2rem; /* Slightly smaller */
-            font-weight: 700;
-            margin: 10px 0;
-            color: #2c3e50;
-            min-height: 70px; /* Reduced height */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 5px;
+            text-align: center;
+            margin: 30px 0;
+            min-height: 100px;
         }
 
-        .input-container {
-            padding: 0 12px 10px; /* Reduced padding */
-            display: flex;
-            gap: 8px; /* Reduced gap */
-            align-items: center;
+        .problem {
+            font-size: 2.3rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+        }
+
+        .base-info {
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-top: 10px;
         }
 
         .answer-input {
-            flex: 1;
-            padding: 14px; /* Reduced padding */
-            font-size: 1.5rem; /* Slightly smaller */
+            width: 100%;
+            max-width: 280px;
+            margin: 0 auto 30px;
+        }
+
+        .answer-input input {
+            width: 100%;
+            font-size: 1.8rem;
             text-align: center;
-            border: 3px solid #e0e0e0;
+            padding: 12px 16px;
             border-radius: 12px;
+            border: 2px solid var(--border);
             outline: none;
             transition: border-color 0.3s;
-            font-weight: 600;
-            color: #2c3e50;
         }
 
-        .answer-input:focus {
-            border-color: #4a00e0;
-            box-shadow: 0 0 0 2px rgba(74, 0, 224, 0.2);
+        .answer-input input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
         }
 
-        .submit-btn {
-            padding: 14px 16px; /* Reduced padding */
-            background: #4a00e0;
-            color: white;
-            border: none;
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            padding: 12px 20px;
             border-radius: 12px;
+            border: none;
+            background: var(--primary);
+            color: white;
+            font-size: 1rem;
             font-weight: 600;
-            font-size: 1rem; /* Slightly smaller */
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 100px;
         }
 
-        .submit-btn:active {
-            transform: scale(0.95);
-            background: #3a00b0;
+        .btn:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: var(--primary);
+            border: 2px solid var(--border);
         }
 
         .feedback {
             text-align: center;
-            min-height: 32px; /* Reduced height */
-            font-size: 1.2rem; /* Slightly smaller */
-            font-weight: 700;
-            padding: 10px; /* Reduced padding */
-            margin: 8px 12px; /* Reduced margin */
-            border-radius: 10px;
-            transition: all 0.4s ease;
+            min-height: 40px;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            font-weight: 600;
         }
 
         .feedback.correct {
-            background: #e8f5e9;
-            color: #2e7d32;
-            animation: pop 0.5s;
+            color: var(--success);
+            animation: pop 0.4s ease;
         }
 
         .feedback.incorrect {
-            background: #ffebee;
-            color: #c62828;
-            animation: shake 0.5s;
-        }
-
-        .controls {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px; /* Reduced gap */
-            padding: 10px 12px; /* Reduced padding */
-            background: #f8f9fa;
-            border-top: 1px solid #eee;
-        }
-
-        .control-btn {
-            padding: 12px; /* Reduced padding */
-            border: none;
-            border-radius: 12px;
-            font-size: 0.95rem; /* Slightly smaller */
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 4px; /* Reduced gap */
-            transition: all 0.2s ease;
-        }
-
-        .control-btn:active {
-            transform: scale(0.96);
-        }
-
-        .start-btn {
-            background: #00c853;
-            color: white;
-        }
-
-        .next-btn {
-            background: #2196f3;
-            color: white;
-        }
-
-        .reset-btn {
-            background: #f44336;
-            color: white;
-        }
-
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px; /* Reduced gap */
-            padding: 12px; /* Reduced padding */
-            background: white;
-            border-top: 1px solid #f0f0f0;
-        }
-
-        .stat-card {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 10px 6px; /* Reduced padding */
-            text-align: center;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-        }
-
-        .stat-value {
-            font-size: 1.3rem; /* Slightly smaller */
-            font-weight: 700;
-            color: #4a00e0;
-            margin: 3px 0;
-        }
-
-        .stat-label {
-            font-size: 0.75rem; /* Slightly smaller */
-            color: #777;
-            font-weight: 500;
-        }
-
-        .timer-container {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            width: 40px; /* Smaller timer */
-            height: 40px; /* Smaller timer */
-        }
-
-        .timer-ring {
-            transform: rotate(-90deg);
-        }
-
-        .timer-circle {
-            fill: none;
-            stroke: rgba(255, 255, 255, 0.7);
-            stroke-width: 4;
-            stroke-linecap: round;
-            transition: stroke-dashoffset 0.1s linear;
-        }
-
-        .timer-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-weight: 700;
-            font-size: 0.9rem; /* Slightly smaller */
-        }
-
-        .sound-toggle {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            width: 34px; /* Slightly smaller */
-            height: 34px; /* Slightly smaller */
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 1rem; /* Slightly smaller */
-            cursor: pointer;
-            backdrop-filter: blur(5px);
+            color: var(--error);
+            animation: shake 0.5s ease;
         }
 
         @keyframes pop {
@@ -309,521 +215,587 @@
 
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-6px); }
-            40%, 80% { transform: translateX(6px); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
         }
 
-        /* iPhone 15 specific optimizations */
-        @media (max-width: 400px) {
-            .container {
-                padding: 0;
-                max-width: 100%;
-            }
-            
-            .header h1 {
-                font-size: 1.3rem;
-            }
-            
-            .header p {
-                font-size: 0.75rem;
-            }
-            
-            .problem-display {
-                font-size: 1.8rem;
-                min-height: 65px;
-            }
-            
-            .answer-input {
-                font-size: 1.4rem;
-                padding: 12px;
-            }
-            
-            .submit-btn {
-                padding: 12px 14px;
-                font-size: 0.95rem;
-            }
-            
-            .control-btn {
-                padding: 10px;
-                font-size: 0.85rem;
-            }
-            
-            .stat-value {
-                font-size: 1.2rem;
-            }
-            
-            .stat-label {
-                font-size: 0.7rem;
-            }
-            
-            .base-btn {
-                min-width: 60px;
-                padding: 7px 5px;
-                font-size: 0.85rem;
-            }
-            
-            .timer-container {
-                width: 36px;
-                height: 36px;
-                top: 10px;
-                right: 10px;
-            }
-            
-            .timer-text {
-                font-size: 0.85rem;
-            }
-            
-            .sound-toggle {
-                width: 32px;
-                height: 32px;
-                font-size: 0.9rem;
-            }
+        .stats {
+            background: var(--secondary);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
         }
-        
-        /* Landscape mode adjustments */
-        @media (max-height: 450px) and (orientation: landscape) {
-            body {
-                padding: 5px;
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--light-text);
+            margin-top: 4px;
+        }
+
+        .progress-ring {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+        }
+
+        .progress-ring-circle {
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+
+        .progress-ring-bg {
+            stroke: var(--border);
+            stroke-width: 4;
+            fill: none;
+        }
+
+        .progress-ring-fill {
+            stroke: var(--progress);
+            stroke-width: 4;
+            stroke-linecap: round;
+            fill: none;
+            transition: stroke-dashoffset 0.1s linear;
+        }
+
+        .sound-toggle {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--light-text);
+            font-size: 1.5rem;
+        }
+
+        .key-hint {
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+            font-size: 0.8rem;
+            color: var(--light-text);
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 24px 16px;
             }
             
-            .container {
-                max-width: 95%;
+            .radio-group {
+                gap: 10px;
             }
             
-            .app-card {
-                display: flex;
-                flex-direction: column;
-                height: 95vh;
-            }
-            
-            .header {
-                padding: 8px 12px;
-            }
-            
-            .header h1 {
-                font-size: 1.2rem;
-            }
-            
-            .header p {
-                display: none;
-            }
-            
-            .problem-container {
-                flex: 1;
-                padding: 10px;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-            }
-            
-            .problem-display {
-                font-size: 1.8rem;
-                min-height: 50px;
-                margin: 5px 0;
-            }
-            
-            .input-container {
-                padding: 0 10px 5px;
-            }
-            
-            .feedback {
-                min-height: 28px;
+            .radio-option label {
+                width: 50px;
+                height: 50px;
                 font-size: 1.1rem;
-                padding: 8px;
-                margin: 5px 10px;
+            }
+            
+            .problem {
+                font-size: 2rem;
             }
             
             .controls {
-                padding: 8px 10px;
+                flex-wrap: wrap;
             }
             
-            .stats-container {
-                padding: 8px;
+            .btn {
+                min-width: 80px;
+                padding: 10px 15px;
+                font-size: 0.9rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="app-card">
-            <div class="header">
-                <button class="sound-toggle">
-                    <i class="fas fa-volume-up"></i>
-                </button>
-                <div class="timer-container">
-                    <svg class="timer-ring" width="40" height="40">
-                        <circle class="timer-circle" r="17" cx="20" cy="20" stroke-dasharray="106" stroke-dashoffset="0"></circle>
-                    </svg>
-                    <div class="timer-text" id="timer">60</div>
-                </div>
-                <h1>Vedic Math Drills</h1>
-                <p>Master mental multiplication</p>
+        <div class="card">
+            <button class="sound-toggle" id="soundToggle" aria-label="Toggle sound">🔊</button>
+            
+            <div class="progress-ring">
+                <svg width="50" height="50" viewBox="0 0 50 50">
+                    <circle class="progress-ring-bg" cx="25" cy="25" r="20"></circle>
+                    <circle class="progress-ring-fill" cx="25" cy="25" r="20" stroke-dasharray="125.6" stroke-dashoffset="125.6"></circle>
+                </svg>
             </div>
             
             <div class="base-selector">
-                <div class="base-btn active" data-base="10">Base 10</div>
-                <div class="base-btn" data-base="100">Base 100</div>
-                <div class="base-btn" data-base="1000">Base 1000</div>
-                <div class="base-btn" data-base="random">Random</div>
+                <h2>Select Base Group</h2>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" name="base" id="base10" value="10" checked>
+                        <label for="base10">10</label>
+                        <span>Base 10</span>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" name="base" id="base100" value="100">
+                        <label for="base100">100</label>
+                        <span>Base 100</span>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" name="base" id="base1000" value="1000">
+                        <label for="base1000">1000</label>
+                        <span>Base 1000</span>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" name="base" id="baseRandom" value="random">
+                        <label for="baseRandom">?</label>
+                        <span>Random</span>
+                    </div>
+                </div>
             </div>
             
-            <div class="problem-container">
-                <div class="problem-display" id="problem">Ready to start</div>
-                
-                <div class="input-container">
-                    <input type="number" class="answer-input" id="answer" placeholder="Answer" inputmode="numeric">
-                    <button class="submit-btn" id="submitBtn">Check</button>
-                </div>
-                
-                <div class="feedback" id="feedback"></div>
+            <div class="problem-display">
+                <div class="problem" id="problemText">Press Start to Begin</div>
+                <div class="base-info" id="baseInfo"></div>
             </div>
+            
+            <div class="answer-input">
+                <input type="number" id="answerInput" placeholder="Your answer" autocomplete="off" disabled>
+            </div>
+            
+            <div class="feedback" id="feedback"></div>
             
             <div class="controls">
-                <button class="control-btn start-btn" id="startBtn">
-                    <i class="fas fa-play"></i> Start
-                </button>
-                <button class="control-btn next-btn" id="nextBtn" disabled>
-                    <i class="fas fa-forward"></i> Next
-                </button>
-                <button class="control-btn reset-btn" id="resetBtn">
-                    <i class="fas fa-redo"></i> Reset
-                </button>
+                <button class="btn" id="startBtn">Start (S)</button>
+                <button class="btn" id="submitBtn" disabled>Submit (Enter)</button>
+                <button class="btn btn-secondary" id="nextBtn" disabled>Next (N)</button>
+                <button class="btn btn-secondary" id="resetBtn">Reset (R)</button>
             </div>
             
-            <div class="stats-container">
-                <div class="stat-card">
-                    <div class="stat-value" id="attempted">0</div>
-                    <div class="stat-label">Attempted</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="correct">0</div>
-                    <div class="stat-label">Correct</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="streak">0</div>
-                    <div class="stat-label">Streak</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="accuracy">0%</div>
-                    <div class="stat-label">Accuracy</div>
+            <div class="stats">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="attempted">0</div>
+                        <div class="stat-label">Attempted</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="correct">0</div>
+                        <div class="stat-label">Correct</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="streak">0</div>
+                        <div class="stat-label">Streak</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="accuracy">0%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="bestTime">0:00</div>
+                        <div class="stat-label">Best Time</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="avgTime">0:00</div>
+                        <div class="stat-label">Avg Time</div>
+                    </div>
                 </div>
             </div>
+            
+            <div class="key-hint">Keyboard Shortcuts: S, Enter, N, R</div>
         </div>
     </div>
-
+    
     <script>
+        // App state
+        const AppState = {
+            IDLE: 'idle',
+            RUNNING: 'running',
+            PAUSED: 'paused'
+        };
+        
+        // Base configuration
+        const baseConfig = {
+            '10': {
+                deltaLimit: 3,
+                digits: 1,
+                pool: Array.from({length: 9}, (_, i) => (i + 1) * 10)
+            },
+            '100': {
+                deltaLimit: 30,
+                digits: 2,
+                pool: Array.from({length: 9}, (_, i) => (i + 1) * 100)
+            },
+            '1000': {
+                deltaLimit: 30,
+                digits: 3,
+                pool: Array.from({length: 9}, (_, i) => (i + 1) * 1000)
+            }
+        };
+        
+        // App class
         class VedicMathApp {
             constructor() {
-                this.state = 'idle';
-                this.currentProblem = null;
+                this.state = AppState.IDLE;
+                this.currentBase = '10';
+                this.currentTempBase = null;
+                this.currentFactors = { a: null, b: null };
+                this.currentAnswer = null;
+                this.audioContext = null;
+                this.soundEnabled = true;
+                this.startTime = null;
+                this.timerInterval = null;
+                this.elapsedTime = 0;
+                
+                // Stats
                 this.stats = {
                     attempted: 0,
                     correct: 0,
-                    streak: 0,
+                    currentStreak: 0,
                     bestStreak: 0,
-                    times: [],
-                    currentStartTime: null,
-                    totalTime: 0
+                    bestTime: null,
+                    totalTime: 0,
+                    lastTimes: []
                 };
-                this.soundEnabled = true;
-                this.audioContext = null;
-                this.currentTimeout = null;
-                this.progressInterval = null;
-                this.elapsedSeconds = 0;
-                this.selectedBase = '10';
                 
-                this.initElements();
-                this.initEventListeners();
-                this.loadStats();
-                this.updateUI();
-                
-                window.App = this;
-            }
-            
-            initElements() {
+                // DOM elements
                 this.elements = {
-                    baseBtns: document.querySelectorAll('.base-btn'),
-                    problemDisplay: document.getElementById('problem'),
-                    answerInput: document.getElementById('answer'),
+                    baseSelector: document.querySelectorAll('input[name="base"]'),
+                    problemText: document.getElementById('problemText'),
+                    baseInfo: document.getElementById('baseInfo'),
+                    answerInput: document.getElementById('answerInput'),
                     feedback: document.getElementById('feedback'),
                     startBtn: document.getElementById('startBtn'),
+                    submitBtn: document.getElementById('submitBtn'),
                     nextBtn: document.getElementById('nextBtn'),
                     resetBtn: document.getElementById('resetBtn'),
-                    submitBtn: document.getElementById('submitBtn'),
-                    attempted: document.getElementById('attempted'),
-                    correct: document.getElementById('correct'),
-                    streak: document.getElementById('streak'),
-                    accuracy: document.getElementById('accuracy'),
-                    soundToggle: document.querySelector('.sound-toggle'),
-                    timerCircle: document.querySelector('.timer-circle'),
-                    timerText: document.getElementById('timer')
+                    soundToggle: document.getElementById('soundToggle'),
+                    progressRing: document.querySelector('.progress-ring-fill'),
+                    stats: {
+                        attempted: document.getElementById('attempted'),
+                        correct: document.getElementById('correct'),
+                        streak: document.getElementById('streak'),
+                        accuracy: document.getElementById('accuracy'),
+                        bestTime: document.getElementById('bestTime'),
+                        avgTime: document.getElementById('avgTime')
+                    }
                 };
+                
+                // Initialize
+                this.init();
             }
             
-            initEventListeners() {
+            init() {
+                // Set up event listeners
+                this.setupEventListeners();
+                
+                // Load stats from localStorage
+                this.loadStats();
+                
+                // Update UI
+                this.updateUI();
+                
+                // Initialize AudioContext
+                this.initAudio();
+                
+                // Initialize progress ring
+                this.updateProgressRing(0);
+            }
+            
+            setupEventListeners() {
+                // Base selector
+                this.elements.baseSelector.forEach(radio => {
+                    radio.addEventListener('change', (e) => {
+                        this.currentBase = e.target.value;
+                    });
+                });
+                
+                // Start button
                 this.elements.startBtn.addEventListener('click', () => this.start());
-                this.elements.nextBtn.addEventListener('click', () => this.nextProblem());
-                this.elements.resetBtn.addEventListener('click', () => this.reset());
+                
+                // Submit button
                 this.elements.submitBtn.addEventListener('click', () => this.checkAnswer());
-                this.elements.soundToggle.addEventListener('click', () => this.toggleSound());
+                
+                // Next button
+                this.elements.nextBtn.addEventListener('click', () => this.nextProblem());
+                
+                // Reset button
+                this.elements.resetBtn.addEventListener('click', () => this.reset());
+                
+                // Sound toggle
+                this.elements.soundToggle.addEventListener('click', () => {
+                    this.soundEnabled = !this.soundEnabled;
+                    this.elements.soundToggle.textContent = this.soundEnabled ? '🔊' : '🔇';
+                });
+                
+                // Answer input
                 this.elements.answerInput.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter') {
+                    if (e.key === 'Enter' && this.state !== AppState.IDLE) {
                         this.checkAnswer();
                     }
                 });
                 
-                this.elements.baseBtns.forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        this.elements.baseBtns.forEach(b => b.classList.remove('active'));
-                        btn.classList.add('active');
-                        this.selectedBase = btn.dataset.base;
-                        
-                        if (this.state === 'running') {
-                            this.nextProblem();
-                        }
-                    });
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 's' || e.key === 'S') this.start();
+                    if (e.key === 'r' || e.key === 'R') this.reset();
+                    if (this.state === AppState.RUNNING && (e.key === 'Enter' || e.key === ' ')) this.checkAnswer();
+                    if (this.state === AppState.PAUSED && (e.key === 'n' || e.key === 'N')) this.nextProblem();
                 });
             }
             
-            getActualBase() {
-                if (this.selectedBase === 'random') {
-                    const bases = [10, 100, 1000];
-                    return bases[Math.floor(Math.random() * bases.length)];
+            initAudio() {
+                try {
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                } catch (e) {
+                    console.warn('Web Audio API not supported');
+                    this.soundEnabled = false;
+                    this.elements.soundToggle.textContent = '🔇';
                 }
-                return parseInt(this.selectedBase);
             }
             
-            getBasePool(base) {
-                const multiples = [];
-                for (let i = 1; i <= 9; i++) {
-                    multiples.push(base * i);
-                }
-                return multiples;
-            }
-            
-            getDeltaLimit(base) {
-                return base === 10 ? 3 : 30;
-            }
-            
-            generateProblem() {
-                const base = this.getActualBase();
-                const pool = this.getBasePool(base);
-                const tempBase = pool[Math.floor(Math.random() * pool.length)];
-                const deltaLimit = this.getDeltaLimit(base);
+            playSound(type) {
+                if (!this.soundEnabled || !this.audioContext) return;
                 
-                let a, b;
-                let attempts = 0;
-                const maxAttempts = 100;
+                const oscillator = this.audioContext.createOscillator();
+                const gainNode = this.audioContext.createGain();
                 
-                do {
-                    a = tempBase + this.getRandomDelta(deltaLimit);
-                    b = tempBase + this.getRandomDelta(deltaLimit);
-                    attempts++;
-                    
-                    if (attempts > maxAttempts) {
-                        // Fallback if we can't find suitable numbers
-                        a = tempBase + (Math.random() > 0.5 ? 1 : -1) * Math.floor(Math.random() * deltaLimit + 1);
-                        b = tempBase + (Math.random() > 0.5 ? 1 : -1) * Math.floor(Math.random() * deltaLimit + 1);
-                        break;
-                    }
-                } while (Math.abs(a - b) > 30);
+                oscillator.connect(gainNode);
+                gainNode.connect(this.audioContext.destination);
                 
-                return {
-                    a,
-                    b,
-                    product: a * b,
-                    base,
-                    tempBase
-                };
-            }
-            
-            getRandomDelta(limit) {
-                const sign = Math.random() > 0.5 ? 1 : -1;
-                return sign * Math.floor(Math.random() * limit + 1);
+                oscillator.type = 'square';
+                oscillator.frequency.value = type === 'correct' ? 523.25 : 349.23; // C5 or F4
+                gainNode.gain.value = 0.2;
+                
+                oscillator.start();
+                
+                setTimeout(() => {
+                    oscillator.stop();
+                }, 300);
             }
             
             start() {
-                if (this.state === 'running') return;
+                if (this.state === AppState.RUNNING) return;
                 
-                this.state = 'running';
-                this.stats.currentStartTime = performance.now();
-                this.elapsedSeconds = 0;
-                this.startProgressTimer();
-                this.nextProblem();
+                this.state = AppState.RUNNING;
+                this.generateProblem();
+                this.elements.answerInput.disabled = false;
+                this.elements.answerInput.focus();
                 this.updateUI();
+                
+                // Start timer
+                this.startTimer();
             }
             
-            nextProblem() {
-                if (this.state === 'idle') this.start();
+            generateProblem() {
+                let baseType = this.currentBase;
                 
-                this.currentProblem = this.generateProblem();
-                this.elements.problemDisplay.textContent = `${this.currentProblem.a} × ${this.currentProblem.b} = ?`;
-                this.elements.answerInput.value = '';
-                this.elements.feedback.textContent = '';
-                this.elements.feedback.className = 'feedback';
-                this.elements.answerInput.focus();
+                // If random base, select one randomly
+                if (baseType === 'random') {
+                    const baseKeys = Object.keys(baseConfig);
+                    baseType = baseKeys[Math.floor(Math.random() * baseKeys.length)];
+                }
                 
-                if (this.state === 'running') {
-                    this.stats.currentStartTime = performance.now();
-                    this.elapsedSeconds = 0;
-                    this.updateProgressRing(0);
+                const config = baseConfig[baseType];
+                
+                // Select random base from pool
+                this.currentTempBase = config.pool[Math.floor(Math.random() * config.pool.length)];
+                
+                // Generate factors within delta limit
+                const delta = config.deltaLimit;
+                let a, b;
+                
+                // Ensure factors are different and within |a - b| <= 30
+                do {
+                    a = this.currentTempBase + Math.floor(Math.random() * (2 * delta + 1)) - delta;
+                    b = this.currentTempBase + Math.floor(Math.random() * (2 * delta + 1)) - delta;
+                } while (Math.abs(a - b) > 30);
+                
+                this.currentFactors = { a, b };
+                this.currentAnswer = a * b;
+                
+                // Update problem display
+                this.elements.problemText.textContent = `${a} × ${b}`;
+                this.elements.baseInfo.textContent = `Near base: ${this.currentTempBase}`;
+            }
+            
+            startTimer() {
+                this.startTime = Date.now();
+                this.elapsedTime = 0;
+                
+                if (this.timerInterval) clearInterval(this.timerInterval);
+                
+                this.timerInterval = setInterval(() => {
+                    this.elapsedTime = Date.now() - this.startTime;
+                    const progress = Math.min(this.elapsedTime / 30000, 1); // 30s max for progress ring
+                    this.updateProgressRing(progress);
+                }, 100);
+            }
+            
+            stopTimer() {
+                if (this.timerInterval) {
+                    clearInterval(this.timerInterval);
+                    this.timerInterval = null;
                 }
             }
             
+            updateProgressRing(progress) {
+                const circumference = 125.6; // 2 * π * r (r=20)
+                const offset = circumference - (progress * circumference);
+                this.elements.progressRing.style.strokeDashoffset = offset;
+            }
+            
             checkAnswer() {
-                if (!this.currentProblem || this.state === 'idle') return;
+                if (this.state !== AppState.RUNNING) return;
                 
                 const userAnswer = parseInt(this.elements.answerInput.value);
                 if (isNaN(userAnswer)) return;
                 
                 this.stats.attempted++;
-                const isCorrect = userAnswer === this.currentProblem.product;
                 
-                if (isCorrect) {
-                    this.stats.correct++;
-                    this.stats.streak++;
-                    this.stats.bestStreak = Math.max(this.stats.bestStreak, this.stats.streak);
-                    
-                    const timeTaken = performance.now() - this.stats.currentStartTime;
-                    this.stats.times.push(timeTaken);
-                    this.stats.totalTime += timeTaken;
-                    
-                    this.elements.feedback.textContent = 'Correct!';
-                    this.elements.feedback.className = 'feedback correct';
-                    
-                    if (this.stats.streak % 10 === 0) {
-                        this.showConfetti();
-                    }
-                    
-                    this.playSound(523.25, 200); // C5 note
-                    this.stopProgressTimer();
+                if (userAnswer === this.currentAnswer) {
+                    // Correct answer
+                    this.handleCorrect();
                 } else {
-                    this.stats.streak = 0;
-                    this.elements.feedback.textContent = 'Try again';
-                    this.elements.feedback.className = 'feedback incorrect';
-                    this.playSound(220, 200); // A3 note
+                    // Incorrect answer
+                    this.handleIncorrect();
                 }
                 
-                this.saveStats();
+                this.updateStats();
+            }
+            
+            handleCorrect() {
+                this.state = AppState.PAUSED;
+                this.stopTimer();
+                
+                this.stats.correct++;
+                this.stats.currentStreak++;
+                this.stats.bestStreak = Math.max(this.stats.bestStreak, this.stats.currentStreak);
+                
+                // Record time
+                this.stats.lastTimes.push(this.elapsedTime);
+                this.stats.totalTime += this.elapsedTime;
+                
+                if (!this.stats.bestTime || this.elapsedTime < this.stats.bestTime) {
+                    this.stats.bestTime = this.elapsedTime;
+                }
+                
+                // Show feedback
+                this.elements.feedback.textContent = 'Correct!';
+                this.elements.feedback.className = 'feedback correct';
+                
+                // Play sound
+                this.playSound('correct');
+                
+                // Update UI
+                this.updateUI();
+            }
+            
+            handleIncorrect() {
+                this.stats.currentStreak = 0;
+                
+                // Show feedback
+                this.elements.feedback.textContent = 'Try again';
+                this.elements.feedback.className = 'feedback incorrect';
+                
+                // Play sound
+                this.playSound('incorrect');
+                
+                // Clear input and focus
+                this.elements.answerInput.value = '';
+                this.elements.answerInput.focus();
+            }
+            
+            nextProblem() {
+                if (this.state !== AppState.PAUSED) return;
+                
+                this.state = AppState.RUNNING;
+                this.generateProblem();
+                this.elements.answerInput.value = '';
+                this.elements.answerInput.focus();
+                this.elements.feedback.textContent = '';
+                this.elements.feedback.className = 'feedback';
                 this.updateUI();
                 
-                if (isCorrect) {
-                    this.currentTimeout = setTimeout(() => {
-                        this.nextProblem();
-                    }, 1500);
-                }
+                // Start timer
+                this.startTimer();
             }
             
             reset() {
-                this.state = 'idle';
-                this.currentProblem = null;
-                clearTimeout(this.currentTimeout);
-                this.stopProgressTimer();
-                
-                this.elements.problemDisplay.textContent = 'Ready to start';
-                this.elements.answerInput.value = '';
-                this.elements.feedback.textContent = '';
-                this.elements.feedback.className = 'feedback';
+                this.state = AppState.IDLE;
+                this.stopTimer();
                 this.updateProgressRing(0);
                 
+                this.elements.problemText.textContent = 'Press Start to Begin';
+                this.elements.baseInfo.textContent = '';
+                this.elements.answerInput.value = '';
+                this.elements.answerInput.disabled = true;
+                this.elements.feedback.textContent = '';
+                this.elements.feedback.className = 'feedback';
+                
+                // Reset stats
+                this.stats = {
+                    attempted: 0,
+                    correct: 0,
+                    currentStreak: 0,
+                    bestStreak: 0,
+                    bestTime: null,
+                    totalTime: 0,
+                    lastTimes: []
+                };
+                
                 this.updateUI();
+                this.saveStats();
             }
             
             updateUI() {
+                // Buttons state
+                this.elements.startBtn.disabled = this.state === AppState.RUNNING;
+                this.elements.submitBtn.disabled = this.state !== AppState.RUNNING;
+                this.elements.nextBtn.disabled = this.state !== AppState.PAUSED;
+                
+                // Stats display
+                this.elements.stats.attempted.textContent = this.stats.attempted;
+                this.elements.stats.correct.textContent = this.stats.correct;
+                this.elements.stats.streak.textContent = this.stats.currentStreak;
+                
                 const accuracy = this.stats.attempted > 0 
-                    ? Math.round((this.stats.correct / this.stats.attempted) * 100) 
+                    ? Math.round((this.stats.correct / this.stats.attempted) * 100)
                     : 0;
+                this.elements.stats.accuracy.textContent = `${accuracy}%`;
                 
-                this.elements.attempted.textContent = this.stats.attempted;
-                this.elements.correct.textContent = this.stats.correct;
-                this.elements.streak.textContent = this.stats.streak;
-                this.elements.accuracy.textContent = `${accuracy}%`;
+                this.elements.stats.bestTime.textContent = this.formatTime(this.stats.bestTime || 0);
                 
-                this.elements.startBtn.disabled = this.state === 'running';
-                this.elements.nextBtn.disabled = this.state !== 'running';
-                
-                const soundIcon = this.soundEnabled ? 'fa-volume-up' : 'fa-volume-mute';
-                this.elements.soundToggle.innerHTML = `<i class="fas ${soundIcon}"></i>`;
+                const avgTime = this.stats.correct > 0 
+                    ? this.stats.totalTime / this.stats.correct
+                    : 0;
+                this.elements.stats.avgTime.textContent = this.formatTime(avgTime);
             }
             
-            startProgressTimer() {
-                this.stopProgressTimer();
-                this.progressInterval = setInterval(() => {
-                    this.elapsedSeconds++;
-                    const progress = Math.min(this.elapsedSeconds / 60, 1);
-                    this.updateProgressRing(progress);
-                    
-                    // Update timer text
-                    this.elements.timerText.textContent = Math.max(0, 60 - this.elapsedSeconds);
-                    
-                    if (this.elapsedSeconds >= 60) {
-                        this.elements.feedback.textContent = 'Time\'s up!';
-                        this.elements.feedback.className = 'feedback incorrect';
-                        this.playSound(220, 500);
-                        this.stopProgressTimer();
-                        setTimeout(() => this.nextProblem(), 2000);
-                    }
-                }, 1000);
-            }
-            
-            stopProgressTimer() {
-                if (this.progressInterval) {
-                    clearInterval(this.progressInterval);
-                    this.progressInterval = null;
+            formatTime(ms) {
+                if (!ms) return '0:00';
+                
+                const totalSeconds = Math.floor(ms / 1000);
+                const minutes = Math.floor(totalSeconds / 60);
+                const seconds = totalSeconds % 60;
+                const fraction = Math.floor((ms % 1000) / 10);
+                
+                if (minutes > 0) {
+                    return `${minutes}:${seconds.toString().padStart(2, '0')}.${fraction.toString().padStart(2, '0')}`;
                 }
+                return `${seconds}.${fraction.toString().padStart(2, '0')}`;
             }
             
-            updateProgressRing(progress) {
-                const circumference = 106; // 2 * π * r (r=17)
-                const offset = circumference * (1 - progress);
-                this.elements.timerCircle.style.strokeDashoffset = offset;
-            }
-            
-            toggleSound() {
-                this.soundEnabled = !this.soundEnabled;
-                this.updateUI();
-            }
-            
-            playSound(frequency, duration) {
-                if (!this.soundEnabled || typeof AudioContext === 'undefined') return;
-                
-                try {
-                    if (!this.audioContext) {
-                        this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                    }
-                    
-                    const oscillator = this.audioContext.createOscillator();
-                    const gain = this.audioContext.createGain();
-                    
-                    oscillator.type = 'square';
-                    oscillator.frequency.value = frequency;
-                    oscillator.connect(gain);
-                    gain.connect(this.audioContext.destination);
-                    
-                    oscillator.start();
-                    gain.gain.exponentialRampToValueAtTime(
-                        0.00001,
-                        this.audioContext.currentTime + duration / 1000
-                    );
-                    
-                    setTimeout(() => {
-                        oscillator.stop();
-                    }, duration);
-                } catch (e) {
-                    console.log("Audio error:", e);
-                }
-            }
-            
-            showConfetti() {
-                if (!this.soundEnabled) return;
-                
-                // Simple confetti effect using sounds
-                const notes = [523.25, 587.33, 659.25, 698.46, 783.99]; // C5, D5, E5, F5, G5
-                for (let i = 0; i < 5; i++) {
-                    setTimeout(() => {
-                        this.playSound(notes[i], 300);
-                    }, i * 150);
-                }
+            saveStats() {
+                localStorage.setItem('vedicMathStats', JSON.stringify(this.stats));
             }
             
             loadStats() {
@@ -833,14 +805,64 @@
                 }
             }
             
-            saveStats() {
-                localStorage.setItem('vedicMathStats', JSON.stringify(this.stats));
+            updateStats() {
+                this.updateUI();
+                this.saveStats();
             }
         }
-        
+
+        // Initialize app when DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
-            const app = new VedicMathApp();
+            window.App = new VedicMathApp();
+            
+            // Run smoke tests if #test is in URL
+            if (window.location.hash === '#test') {
+                runSmokeTests();
+            }
         });
+
+        // Smoke tests for UI flow
+        function runSmokeTests() {
+            console.log('Running smoke tests...');
+            const app = window.App;
+            
+            // Test 1: Initial state
+            console.assert(app.state === AppState.IDLE, 'Initial state should be idle');
+            console.assert(app.elements.answerInput.disabled, 'Input should be disabled initially');
+            
+            // Test 2: Start button
+            app.start();
+            console.assert(app.state === AppState.RUNNING, 'State should be running after start');
+            console.assert(!app.elements.answerInput.disabled, 'Input should be enabled');
+            console.assert(app.currentFactors.a !== null, 'Factors should be generated');
+            
+            // Test 3: Submit incorrect answer
+            const wrongAnswer = app.currentAnswer + 1;
+            app.elements.answerInput.value = wrongAnswer;
+            app.checkAnswer();
+            console.assert(app.stats.attempted === 1, 'Attempted count should be 1');
+            console.assert(app.stats.correct === 0, 'Correct count should be 0');
+            console.assert(app.stats.currentStreak === 0, 'Streak should be 0');
+            
+            // Test 4: Submit correct answer
+            app.elements.answerInput.value = app.currentAnswer;
+            app.checkAnswer();
+            console.assert(app.state === AppState.PAUSED, 'State should be paused after correct answer');
+            console.assert(app.stats.attempted === 2, 'Attempted count should be 2');
+            console.assert(app.stats.correct === 1, 'Correct count should be 1');
+            console.assert(app.stats.currentStreak === 1, 'Streak should be 1');
+            
+            // Test 5: Next problem
+            app.nextProblem();
+            console.assert(app.state === AppState.RUNNING, 'State should be running after next problem');
+            
+            // Test 6: Reset
+            app.reset();
+            console.assert(app.state === AppState.IDLE, 'State should be idle after reset');
+            console.assert(app.stats.attempted === 0, 'Stats should be reset');
+            
+            console.log('Smoke tests completed');
+        }
     </script>
 </body>
 </html>
